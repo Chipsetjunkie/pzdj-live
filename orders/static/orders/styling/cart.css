@@ -17,7 +17,6 @@
   text-align: center;
   z-index: 3;
   margin-left: 15%;
-  border-radius: 10px;
   box-shadow: 10px 0 10px 0 rgb(0,0,0,0.4);
   transition: all 0.5s;
 
@@ -26,8 +25,7 @@
 input{
   background: orange;
   border: 0;
-  border-bottom: 1px solid coral;
-  border-radius: 5px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
   margin-top: 10%;
   width:80%;
 }
@@ -45,6 +43,9 @@ input{
 }
 
 .innertext{
+  font-family: fantasy;
+  font-style: none;
+  font-size: 12px;
   padding-left: 10px;
   padding-bottom: 10px;
 }
@@ -73,13 +74,7 @@ span{
 
 .grid-item-2{
   grid-area: 1 / 2 / 2 / 4;
-  background-color: teal;
-  border-radius: 10px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 0px;
-  box-sizing:border-box;
-  font-size: 30px;
-  text-align: center;
+  box-shadow: 10px 0 10px 0px rgba(0,0,0,0.2);
   z-index: 2;
   margin-top: 2%;
 
@@ -101,6 +96,51 @@ span{
   justify-content: flex-end;
 }
 
+hr {
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  margin-left: 30%;
+  margin-right: 10%;
+}
+
+
+
+#contents{
+  margin-top: 5%;
+  height: 60%;
+  overflow-y:scroll;
+}
+#cartclear{
+  margin-left: 90%;
+}
+#carttotal{
+  border: 1px solid rgba(0,0,0,0);
+  box-shadow: 0px 2px 5px 0 rgba(0,0,0,0.3);
+  padding-left: 3%;
+  margin-top:5%;
+  margin-left: 75%;
+  margin-right: 5%;
+  font-family: sans-serif;
+  font-size: 15px;
+  text-transform:capitalize;
+}
+
+
+
+#menutype{
+  margin-top: 4%;
+  margin-left: 30%;
+  margin-bottom: 1%;
+  font-family: Helvetica,sans-serif;
+}
+
+
+#ingredients{
+  margin-left: 30%;
+  margin-bottom: 4%;
+  font-family: monospace;
+  font-size: 9px;
+}
 
 ::-webkit-input-placeholder {
    font-style: italic;
