@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Cart</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'myapp/styling/main.css' %}">
+    <link rel="stylesheet" href="{% static 'orders/styling/cart.css' %}">
     <script src="{% static 'myapp/scripts/cart.js'%}"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 
@@ -28,12 +28,16 @@
       </div>
       <div class="grid-item-4"></div>
       <div class="grid-item-2">
-            <div id="cartclear"><p>item</p></div>
+            <div id="cartclear">
+              <a href="{% url 'clear'%}">
+                <img src="{% static 'orders/icons/delete.png' %}" alt="">
+              </a>
+            </div>
 
             <div id="contents">
-            {% for i,j in cart%}
-              <p id="menutype"><b>{{i}}</b></p>
-              <small><p id="ingredients">{{j}}</p></small>
+            {% for i in cart.stuff.all%}
+              <p id="menutype"><b>{{i.Base.menucategory}}</b></p>
+              <small><p id="ingredients">{{i}}</p></small>
               <hr>
 
             {% endfor %}
@@ -58,7 +62,9 @@
             </div>
       </div>
     </div>
-
+<footer>
+  Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+</footer>
 </body>
 </html>
 
@@ -75,6 +81,7 @@
 
 
 <!--
+    Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 
       <div class="container-fluid">
           <div class="row">

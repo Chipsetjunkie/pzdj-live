@@ -1,3 +1,9 @@
+#cart-section{
+  margin-top: 2%;
+  margin-left: 90%;
+}
+
+
 #pizza-items{
   margin-top: 12%;
   display:flex;
@@ -10,22 +16,36 @@
   margin-top: 10%;
   display: flex;
   flex-direction: row;
-  width: 100%
+  width: 100%;
+  height:50%;
+  background: yellow
 }
+
+#Pizza-card{
+  box-shadow: 0 6px 10px 0px rgba(0,0,0,0.4);
+
+}
+
+#Sicillian-card{
+    box-shadow: 0 6px 10px 0px rgba(0,0,0,0.4);
+}
+
 
 #Sub-card{
     position: absolute;
     z-index: 1;
     margin-left:31%;
     transform: rotateZ(-10deg);
-    box-shadow: 2px 4px 5px 0px rgba(0,0,0,0.4);
+    box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
+    transition: all .5s;
 }
 
 #Pasta-card{
   z-index: 2;
   margin-left:34%;
   transform: rotateZ(0deg);
-  box-shadow: 2px 4px 5px 0px rgba(0,0,0,0.4);
+  box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
+  transition: all .5s;
 }
 
 #Salad-card{
@@ -33,7 +53,8 @@
   z-index: 3;
   margin-left:37%;
   transform: rotateZ(10deg);
-  box-shadow: 2px 4px 5px 0px rgba(0,0,0,0.4);
+  box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
+  transition: all .5s;
 }
 
 #Dinner-card{
@@ -41,9 +62,16 @@
   z-index: 4;
   margin-left: 40%;
   transform: rotateZ(20deg);
-  box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.4);
+  box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
+  transition: all .5s;
 }
 
 .card-body{
   margin-left: 10%;
+}
+
+#footer{
+  margin-top:10%;
+  height: 50vh;
+  background: orange;
 }

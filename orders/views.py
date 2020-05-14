@@ -90,7 +90,7 @@ def json_test(request):
 
 def Checkout_cart(request):
     context = {
-    'cart': Cart.objects.all().filter(user=request.user, order_status = False)
+    'cart': Cart.objects.all().filter(user=request.user, order_status = False).first()
     }
     return render(request,"orders/cart.html",context)
 
