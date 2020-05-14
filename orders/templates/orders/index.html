@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Pizza!!</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'orders/styling/main.css' %}">
+  </head>
+
+  <body>
+    <!-- Cart Button -->
+  <nav>
+        <div id= "cart-section">
+            {% if cart.first == None %}
+            <button id="cart-button" type="button" class="btn btn-outline-warning">Cart</button>
+            {% else %}
+            <a href="{% url 'cart'%}"><button id="cart-button-active" type="button" class="btn btn-warning">Cart</button></a>
+            {% endif %}
+        </div>
+  </nav>
+
+    <div id='Menu-cards'>
+          <!-- Regular Items -->
+          <div id="pizza-items">
+                <div class="card" id = "Pizza-card" style="width: 18rem;">
+                  <div id="Menu=body" class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <form id="regular-form" method="post">
+                    <!--<form action="{% url 'add'%}" method="post"> -->
+                      {% csrf_token %}
+                      <b>Base</b><br>
+                      {% for i in Reg_tops %}
+                        {% if i.foodcategory == 'Base' %}
+                          {% if i.name == "Cheese"%}
+                          <div>
+                          <label><input type="radio" id="base-item" class="form-check-input" value ="{{i.id}}" name="base" checked>{{i.name}}</label>
+                          <span class="basespan" id="basespan{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="base-size" name="base_size" value="{{i.id}}" >size</label><br></span>
+                          </div>
+                          {% else%}
+                          <div>
+                          <label><input type="radio" id="base-item" class="form-check-input" value ="{{i.id}}" name="base">{{i.name}}</label>
+                          <span class="basespan" id="basespan{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="base-size" name="base_size" value="{{i.id}}" >size</label><br></span>
+                          </div>
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                      <b>Toppings</b><br>
+                        {% for i in Reg_tops %}
+                          {% if i.foodcategory != 'Base' %}
+                          <div>
+                          <label><input type="checkbox" id="items" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                          <span class="sizespan" id="sizespan{{i.id}}" data-value={{i.id}}><label><input type="checkbox" id="items-size" name="items_size" value="{{i.id}}" >size</label><br></span>
+                          </div>
+                          {% endif %}
+                        {% endfor %}
+                        <b>Specials</b><br>
+                          {% for i in Reg_spec %}
+                            <div>
+                            <label><input type="checkbox" class="form-check-input" id="special-items" value ="{{i.id}}" name="specials">{{i.name}}</label>
+                            <span class="specialspan" id="specialspan{{i.id}}" data-special={{i.id}}><label><input type="checkbox" name="specials_size" value="{{i.id}}" >size</label><br></span>
+                          </div>
+                          {% endfor %}
+                        <input type="submit"  value="Add">
+                    </form>
+                  </div>
+                </div>
+
+
+                  <!-- Sicillian Items -->
+                <div class="card" id = "Sicillian-card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title">Special title treatment</h5>
+                      <form action="{% url 'add' %}" method="post">
+                        {% csrf_token %}
+                        <b>Base</b><br>
+                        {% for i in Reg_tops %}
+                          {% if i.foodcategory == 'Base' %}
+                            <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="base">{{i.name}}</label>
+                            <label><input type="checkbox" name="base_size" value="{{i.id}}" >size</label><br>
+                          {% endif %}
+                        {% endfor %}
+                        <b>Toppings</b><br>
+                          {% for i in Reg_tops %}
+                            <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                            <label><input type="checkbox" name="items_size" value="{{i.id}}" >size</label><br>
+                          {% endfor %}
+                          <b>Specials</b><br>
+                            {% for i in Reg_spec %}
+                              <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                              <label><input type="checkbox" name="items_size" value="{{i.id}}" >size</label><br>
+                            {% endfor %}
+
+                          <input type="submit"  value="Add">
+                      </form>
+                    </div>
+                    </div>
+                  </div>
+              <!-- Subs -->
+              <div  id="Other-items">
+                 <p id="second-section"></p>
+                    <div class="card" id = "Sub-card" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <form action="{% url 'add' %}" method="post">
+                          {% csrf_token %}
+                          <b>Base</b><br>
+                          {% for i in Reg_tops %}
+                            {% if i.foodcategory == 'Base' %}
+                              <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="base">{{i.name}}</label>
+                              <label><input type="checkbox" name="base_size" value="{{i.id}}" >size</label><br>
+                            {% endif %}
+                          {% endfor %}
+                          <b>Toppings</b><br>
+                            {% for i in Reg_tops %}
+                              <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                              <label><input type="checkbox" name="items_size" value="{{i.id}}" >size</label><br>
+                            {% endfor %}
+                            <b>Specials</b><br>
+                              {% for i in Reg_spec %}
+                                <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="specials">{{i.name}}</label>
+                                <label><input type="checkbox" name="items_size" value="{{i.id}}" >size</label><br>
+                              {% endfor %}
+
+                            <input type="submit"  value="Add">
+                        </form>
+                      </div>
+                      </div>
+
+                      <!-- Pasta -->
+                      <div class="card" id = "Pasta-card" style="width: 18rem;">
+                        <div class="card-body">
+                          <h5 class="card-title">Special title treatment</h5>
+                          <form action="{% url 'add' %}" method="post">
+                            {% csrf_token %}
+                            <b>Base</b><br>
+                            {% for i in Reg_tops %}
+                              {% if i.foodcategory == 'Base' %}
+                                <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="base">{{i.name}}</label>
+                                <label><input type="checkbox" name="base_size" value="{{i.id}}" >size</label><br>
+                              {% endif %}
+                            {% endfor %}
+                            <b>Toppings</b><br>
+                              {% for i in Reg_tops %}
+                                <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                                <label><input type="checkbox" name="items_size" value="{{i.id}}" >size</label><br>
+                              {% endfor %}
+                              <b>Specials</b><br>
+                                {% for i in Reg_spec %}
+                                  <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                                  <label><input type="checkbox" name="items_size" value="{{i.id}}" >size</label><br>
+                                {% endfor %}
+
+                              <input type="submit"  value="Add">
+                          </form>
+                        </div>
+                        </div>
+
+                        <!--Salad -->
+                        <div class="card" id = "Salad-card" style="width: 18rem;">
+                          <div class="card-body">
+                            <h5 class="card-title">Special title treatment</h5>
+                            <form action="{% url 'add' %}" method="post">
+                              {% csrf_token %}
+                              <b>Base</b><br>
+                              {% for i in Reg_tops %}
+                                {% if i.foodcategory == 'Base' %}
+                                  <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="base">{{i.name}}</label>
+                                  <label><input type="checkbox" name="base_size" value="{{i.id}}" >size</label><br>
+                                {% endif %}
+                              {% endfor %}
+                              <b>Toppings</b><br>
+                                {% for i in Reg_tops %}
+                                  <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                                  <label><input type="checkbox" name="items_size" value="{{i.id}}" >size</label><br>
+                                {% endfor %}
+                                <b>Specials</b><br>
+                                  {% for i in Reg_spec %}
+                                    <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                                    <label><input type="checkbox" name="items_size" value="{{i.id}}" >size</label><br>
+                                  {% endfor %}
+
+                                <input type="submit"  value="Add">
+                            </form>
+                          </div>
+                          </div>
+                          <!-- Dinner Plates -->
+                          <div class="card" id = "Dinner-card" style="width: 18rem;">
+                            <div class="card-body">
+                              <h5 class="card-title">Special title treatment</h5>
+                              <form action="{% url 'add' %}" method="post">
+                                {% csrf_token %}
+                                <b>Base</b><br>
+                                {% for i in Reg_tops %}
+                                  {% if i.foodcategory == 'Base' %}
+                                    <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="base">{{i.name}}</label>
+                                    <label><input type="checkbox" name="base_size" value="{{i.id}}" >size</label><br>
+                                  {% endif %}
+                                {% endfor %}
+                                <b>Toppings</b><br>
+                                  {% for i in Reg_tops %}
+                                    <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                                    <label><input type="checkbox" name="items_size" value="{{i.id}}" >size</label><br>
+                                  {% endfor %}
+                                  <b>Specials</b><br>
+                                    {% for i in Reg_spec %}
+                                      <label><input type="checkbox" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                                      <label><input type="checkbox" name="items_size" value="{{i.id}}" >size</label><br>
+                                    {% endfor %}
+
+                                  <input type="submit"  value="Add">
+                              </form>
+                            </div>
+                            </div>
+                        </div>
+              <div  id="Footer">
+                    <p id="footer"> footer</p>
+              </div>
+          </div>
+
+  </body>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  {% load static %}
+  <script src ="{% static 'orders/scripts/events.js' %}"></script>
+  <script src ="{% static 'orders/scripts/animate.js' %}"></script>
+  <script src ="{% static 'orders/scripts/serv_comm.js' %}"></script>
+
+
+</html>

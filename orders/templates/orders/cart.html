@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Cart</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'myapp/styling/main.css' %}">
+    <script src="{% static 'myapp/scripts/cart.js'%}"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+  </head>
+  <body>
+    <div class="grid-container">
+      <div class="grid-item-1">
+        <div id="address">
+              <form method="post">
+                <label></label><br>
+                <input type="text" class="innertext" placeholder="Name"><br>
+                <input type="text" class="innertext" placeholder="Address 1"><br>
+                <input type="text" class="innertext" placeholder="Address 2"><br>
+                <input type="text" class="innertext" placeholder="City"><br>
+                <input type="text" class="innertext" placeholder="State"><br>
+                <input type="text" class="innertext" placeholder="Postal Code"><br>
+                <input type="text" class="innertext" placeholder="Telephone"><br>
+                <label></label>
+              </form>
+        </div>
+      </div>
+      <div class="grid-item-4"></div>
+      <div class="grid-item-2">
+            <div id="cartclear"><p>item</p></div>
+
+            <div id="contents">
+            {% for i,j in cart%}
+              <p id="menutype"><b>{{i}}</b></p>
+              <small><p id="ingredients">{{j}}</p></small>
+              <hr>
+
+            {% endfor %}
+          </div>
+          <div id="carttotal"><p><b>total</b></p></div>
+      </div>
+      <div class="grid-item-3">
+            <div id="buttons">
+              <div id="backbutton">
+                    <button id ="back-button" class="button1" type="button" name="button"> Back </button>
+              </div>
+              <div class="checkbutton">
+                    <button id ="checkout-button" class="button1" type="button" name="button"> Check </button>
+              </div>
+
+              <div id="cancel-button">
+              </div>
+              <div id="payment-button">
+
+              </div>
+
+            </div>
+      </div>
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-2">
+
+              </div>
+              <div id="sidecolumn" class="col-2">
+              <div  id="fillers_1" class="row"></div>
+              <div id="siderow" class="row">
+                <div id="address-card" class="card">
+                    <div id="address" class="card-body">
+                        <form method="post">
+                          <label></label><br>
+                          <input type="text" class="innertext" placeholder="Name"><br>
+                          <input type="text" class="innertext" placeholder="Address 1"><br>
+                          <input type="text" class="innertext" placeholder="Address 2"><br>
+                          <input type="text" class="innertext" placeholder="City"><br>
+                          <input type="text" class="innertext" placeholder="State"><br>
+                          <input type="text" class="innertext" placeholder="Postal Code"><br>
+                          <input type="text" class="innertext" placeholder="Telephone"><br>
+                          <label></label>
+                        </form>
+                    </div>
+                </div>
+              </div>
+              <div  id="fillers_2" class="row"></div>
+          </div>
+              <div class="col-5">
+                    <div id="subjectrow" class="row">
+                            <div id="content" class="card">
+                                <div class="card-body">
+                                  <div class="card-body-area">
+                                      <p>Items to be displayed</p>
+                                  </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div id="customrow" class="row">
+                          <div class="col-4">
+
+                          </div>
+                          <div class="col">
+                                <button id ="back-button" class="buttom1" type="button" name="button"> Click me !! </button>
+                          </div>
+                          <div class="col">
+                                <button id ="checkout-button" class="button2" type="button" name="button"> Click me !! </button>
+                          </div>
+
+                    </div>
+              </div>
+              <div class="col">
+
+              </div>
+
+          </div>
+
+      </div>
+  </body>
+</html>-->
