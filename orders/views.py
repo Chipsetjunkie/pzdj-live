@@ -13,6 +13,10 @@ def index(request):
         'Reg_spec': Menu.objects.all().filter(menucategory='Regular',special=True),
         'Sci_tops': Menu.objects.all().filter(menucategory='Sicillian',special=False),
         'Sci_spec': Menu.objects.all().filter(menucategory='Sicillian',special=True),
+        'Subs': Menu.objects.all().filter(menucategory='Subs'),
+        'Pasta': Menu.objects.all().filter(menucategory='Pasta'),
+        'Salad': Menu.objects.all().filter(menucategory='Salad'),
+        'Dinner': Menu.objects.all().filter(menucategory='Dinner'),
         'cart': Cart.objects.all().filter(user=request.user, order_status = False)
     }
 
@@ -64,7 +68,7 @@ def Regular(request):
     else:
         od = Order(Order.objects.last().id+1,*order)
 
-    od.save()
+
     if Cart.objects.all().filter(user = request.user).last() == None:
         if Cart.objects.last() == None:
             cart = Cart(1,user = request.user)
@@ -76,14 +80,17 @@ def Regular(request):
     else:
         cart = Cart.objects.all().filter(user = request.user).first()
 
-    Total = round(round(get_price(items,RegularPrice),2) + cart.order_total,2)
-    print(Total)
+
+    od.order_total = round(get_price(items,RegularPrice),2)
+    od.save()
     cart.stuff.add(od)
-    cart.order_total = Total
+    cart.Total += od.order_total
     cart.save()
+
     #print("added!!")
     #return redirect(reverse('index'))
-    return JsonResponse({"data":updated_data(request)})
+    #return JsonResponse({"data":updated_data(request)})
+    return "r-updated!"
 
 def Sicillian(request):
     item_selections =request.POST
@@ -131,6 +138,42 @@ def Sicillian(request):
     else:
         od = Order(Order.objects.last().id+1,*order)
 
+    if Cart.objects.all().filter(user = request.user).last() == None:
+        if Cart.objects.last() == None:
+            cart = Cart(1,user = request.user)
+
+        else:
+            cart = Cart(Cart.objects.last().id + 1,user = request.user)
+
+        cart.save()
+    else:
+        cart = Cart.objects.all().filter(user = request.user).first()
+
+    od.order_total = round(get_price(items,SicillianPrice),2)
+    od.save()
+    cart.stuff.add(od)
+    cart.Total += od.order_total
+    cart.save()
+    #return redirect(reverse('index'))
+    #return JsonResponse({"data":updated_data(request)})
+    return "s-updated! "
+
+
+def Subs(request):
+    item_selections = request.POST
+    Total_cost = 0.0
+
+    if Order.objects.last() == None:
+        od = Order(1)
+    else:
+        od = Order(Order.objects.last().id+1)
+
+    od.save()
+    for i in item_selections.getlist("subs"):
+        obj = Menu.objects.all().filter(id=i)
+        Total_cost += obj[0].Price_small
+        od.Others.add(obj[0])
+    od.order_total = Total_cost
     od.save()
     if Cart.objects.all().filter(user = request.user).last() == None:
         if Cart.objects.last() == None:
@@ -142,14 +185,112 @@ def Sicillian(request):
         cart.save()
     else:
         cart = Cart.objects.all().filter(user = request.user).first()
-    print(items)
-    Total = round(round(get_price(items,SicillianPrice),2) + cart.order_total,2)
+
     cart.stuff.add(od)
-    cart.order_total = Total
+    cart.Total += Total_cost
     cart.save()
-    
-    return redirect(reverse('index'))
-    #return JsonResponse({"data":updated_data(request)})
+
+    return redirect(reverse("index"))
+
+def Dine(request):
+    item_selections = request.POST
+    Total_cost = 0.0
+
+    if Order.objects.last() == None:
+        od = Order(1)
+    else:
+        od = Order(Order.objects.last().id+1)
+
+    od.save()
+    for i in item_selections.getlist("dinner"):
+        obj = Menu.objects.all().filter(id=i)
+        Total_cost += obj[0].Price_small
+        od.Others.add(obj[0])
+    od.order_total = Total_cost
+    od.save()
+    if Cart.objects.all().filter(user = request.user).last() == None:
+        if Cart.objects.last() == None:
+            cart = Cart(1,user = request.user)
+
+        else:
+            cart = Cart(Cart.objects.last().id + 1,user = request.user)
+
+        cart.save()
+    else:
+        cart = Cart.objects.all().filter(user = request.user).first()
+
+    cart.stuff.add(od)
+    cart.Total += Total_cost
+    cart.save()
+
+    return redirect(reverse("index"))
+
+
+def Salad(request):
+    item_selections = request.POST
+    Total_cost = 0.0
+
+    if Order.objects.last() == None:
+        od = Order(1)
+    else:
+        od = Order(Order.objects.last().id+1)
+
+    od.save()
+    for i in item_selections.getlist("salad"):
+        obj = Menu.objects.all().filter(id=i)
+        Total_cost += obj[0].Price_small
+        od.Others.add(obj[0])
+    od.order_total = Total_cost
+    od.save()
+    if Cart.objects.all().filter(user = request.user).last() == None:
+        if Cart.objects.last() == None:
+            cart = Cart(1,user = request.user)
+
+        else:
+            cart = Cart(Cart.objects.last().id + 1,user = request.user)
+
+        cart.save()
+    else:
+        cart = Cart.objects.all().filter(user = request.user).first()
+
+    cart.stuff.add(od)
+    cart.Total += Total_cost
+    cart.save()
+
+    return redirect(reverse("index"))
+
+def Pasta(request):
+    item_selections = request.POST
+    Total_cost = 0.0
+
+    if Order.objects.last() == None:
+        od = Order(1)
+    else:
+        od = Order(Order.objects.last().id+1)
+
+    od.save()
+    for i in item_selections.getlist("pasta"):
+        obj = Menu.objects.all().filter(id=i)
+        Total_cost += obj[0].Price_small
+        od.Others.add(obj[0])
+    od.order_total = Total_cost
+    od.save()
+    if Cart.objects.all().filter(user = request.user).last() == None:
+        if Cart.objects.last() == None:
+            cart = Cart(1,user = request.user)
+
+        else:
+            cart = Cart(Cart.objects.last().id + 1,user = request.user)
+
+        cart.save()
+    else:
+        cart = Cart.objects.all().filter(user = request.user).first()
+
+    cart.stuff.add(od)
+    cart.Total += Total_cost
+    cart.save()
+
+    return redirect(reverse("index"))
 
 
 def Checkout_cart(request):
@@ -208,8 +349,8 @@ def get_price(items,tag):
 
     return total
 
-
-def updated_data(request):
+"""def updated_data(request):
     a = Cart.objects.all().filter(user=request.user, order_status = False).first()
     result_str = [[i.Base.menucategory,str(i)] for i in a.stuff.all()]
     return result_str
+"""

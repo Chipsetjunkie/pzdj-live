@@ -38,7 +38,9 @@
     transform: rotateZ(-10deg);
     box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
     transition: all .5s;
+    height: 70vh;
 }
+
 
 #Pasta-card{
   z-index: 2;
@@ -46,6 +48,7 @@
   transform: rotateZ(0deg);
   box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
   transition: all .5s;
+  height: 70vh;
 }
 
 #Salad-card{
@@ -55,6 +58,7 @@
   transform: rotateZ(10deg);
   box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
   transition: all .5s;
+  height:70vh;
 }
 
 #Dinner-card{
@@ -64,6 +68,7 @@
   transform: rotateZ(20deg);
   box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
   transition: all .5s;
+  height:70vh;
 }
 
 .card-body{
@@ -74,4 +79,11 @@
   margin-top:10%;
   height: 50vh;
   background: orange;
+}
+
+
+
+.menu{
+  display: flex;
+  flex-direction: row;
 }

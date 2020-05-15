@@ -5,7 +5,15 @@ document.addEventListener("DOMContentLoaded", () =>{
 
             event.preventDefault();
             console.log(server_response);
-            process("#regular-form")
+            process("#regular-form",'added/')
+            document.querySelector("#cart-section").innerHTML = button();
+
+      }
+
+      document.querySelector("#sicillian-form").onsubmit = function(event){
+            event.preventDefault();
+            console.log(server_response);
+            process("#sicillian-form",'addeds/')
             document.querySelector("#cart-section").innerHTML = button();
 
       }
@@ -13,21 +21,12 @@ document.addEventListener("DOMContentLoaded", () =>{
 
 });
 
-function process(tag){
-    var server_response ="none";
+function process(tag,route){
     var request = new XMLHttpRequest();
-    request.open('POST','added/');
-    request.onload = () => {
-        console.log(server_response)
-        server_response = JSON.parse(request.responseText);
-        console.log(server_response.data)// this shit wont work better create a url route for cart click
-        // which redirects to index and use java to show modal simple!!
-    }
-
-
+    request.open('POST',route);
     var formdata = new FormData(document.querySelector(tag))
     request.send(formdata);
-
+    console.log(request.response)
 }
 
 
