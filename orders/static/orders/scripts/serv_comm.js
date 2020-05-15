@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () =>{
             event.preventDefault();
             console.log(server_response);
             process("#regular-form")
+            document.querySelector("#cart-section").innerHTML = button();
 
       }
 
@@ -26,5 +27,20 @@ function process(tag){
 
     var formdata = new FormData(document.querySelector(tag))
     request.send(formdata);
+
+}
+
+
+function button(){
+    var button = document.createElement("button");
+    var a = document.createElement("a");
+    a.setAttribute("href","cart/");
+    button.setAttribute("type","button");
+    button.setAttribute("class","btn btn-warning");
+
+    button.innerHTML = "Cart";
+    a.innerHTML = button.outerHTML;
+
+    return a.outerHTML;
 
 }

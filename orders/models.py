@@ -88,4 +88,4 @@ class SicillianPrice(models.Model):
         return [self.Base_small,self.item_1_small,self.item_2_small,self.item_3_small,self.Special_small]
 
     def get_large(self):
-        return [self.Base_small,self.item_1_small,self.item_2_small,self.item_3_small,self.Special_small]
+        return [self.Base_large,self.item_1_large,self.item_2_large,self.item_3_large,self.Special_large]
