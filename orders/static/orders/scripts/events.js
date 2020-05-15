@@ -1,37 +1,54 @@
 document.addEventListener("DOMContentLoaded",() => {
       console.log("loaded js!!")
-      var top_cnt = 0;
-      var spc_cnt = 0;
-      var base_cnt = 0;
-      var top_disable = 0;
-      var sp_disable = 0;
-      var base_disable = 0;
-      var classitems = [".sizespan",".specialspan",".basespan"]
+      var reg_top_cnt = 0;
+      var reg_spc_cnt = 0;
+      var reg_base_cnt = 0;
+      var reg_top_disable = 0;
+      var reg_sp_disable = 0;
+      var reg_base_disable = 0;
 
+      var sci_top_cnt = 0;
+      var sci_spc_cnt = 0;
+      var sci_base_cnt = 0;
+      var sci_top_disable = 0;
+      var sci_sp_disable = 0;
+      var sci_base_disable = 0;
+      var classitems = [".sizespan",".specialspan",".basespan",".sci-sizespan",".sci-specialspan",".sci-basespan"]
+
+
+      // Initial disable of size checkboxes
       for(i=0; i<classitems.length; i++){
         document.querySelectorAll(classitems[i]).forEach(i => {
             document.querySelector("#"+i.id).style.visibility="hidden";
         });
-
       }
 
 
+
+      // initial Base-sizes radio enable
+
+      document.querySelectorAll("#sci-base-item").forEach(i => {
+        if (i.checked == true){
+          reveal(i.value,".sci-basespan","data-base")
+        }
+      });
+      // Regular Contents
       document.querySelectorAll("#items").forEach(i => {
           i.onclick = () => {
             if (i.checked == true){
-              top_cnt +=1;
+              reg_top_cnt +=1;
               reveal(i.value,".sizespan","data-value")
-              if (top_cnt == 3){
-                top_disable = 1
+              if (reg_top_cnt == 3){
+                reg_top_disable = 1
                 disable("#items")
               }
             }
             else{
-              top_cnt -=1;
+              reg_top_cnt -=1;
               hide(i.value,".sizespan","data-value")
-              if (top_disable ==1 && top_cnt < 3){
+              if (reg_top_disable ==1 && reg_top_cnt < 3){
                 enable("#items")
-                top_disable=0
+                reg_top_disable=0
               }
             }
           }
@@ -40,19 +57,19 @@ document.addEventListener("DOMContentLoaded",() => {
         document.querySelectorAll("#special-items").forEach(i => {
             i.onclick = () => {
               if (i.checked == true){
-                spc_cnt +=1;
+                reg_spc_cnt +=1;
                 reveal(i.value,".specialspan","data-special")
-                if (spc_cnt == 1){
+                if (reg_spc_cnt == 1){
                   disable("#special-items")
-                  sp_disable = 1
+                  reg_sp_disable = 1
                 }
               }
               else{
-                spc_cnt -=1;
+                reg_spc_cnt -=1;
                 hide(i.value,".specialspan","data-special")
-                if (sp_disable ==1 && spc_cnt < 1){
+                if (reg_sp_disable ==1 && reg_spc_cnt < 1){
                   enable("#special-items")
-                  sp_disable = 0
+                  reg_sp_disable = 0
                 }
               }
             }
@@ -63,11 +80,70 @@ document.addEventListener("DOMContentLoaded",() => {
                 reveal(i.value,".basespan","data-base")
               }
               else{
-                hidden(i.value,".basespan","data-base")
+                hide(i.value,".basespan","data-base")
+              }
+            });
+
+        // Sicillian Contents
+
+        document.querySelectorAll("#sci-items").forEach(i => {
+            i.onclick = () => {
+              if (i.checked == true){
+                sci_top_cnt +=1;
+                reveal(i.value,".sci-sizespan","data-value")
+                if (sci_top_cnt == 3){
+                  sci_top_disable = 1
+                  disable("#sci-items")
+                }
+              }
+              else{
+                sci_top_cnt -=1;
+                hide(i.value,".sci-sizespan","data-value")
+                if (sci_top_disable ==1 && sci_top_cnt < 3){
+                  enable("#sci-items")
+                  sci_top_disable=0
+                }
+              }
+            }
+          });
+
+          document.querySelectorAll("#sci-special-items").forEach(i => {
+              i.onclick = () => {
+                if (i.checked == true){
+                  sci_spc_cnt +=1;
+                  reveal(i.value,".sci-specialspan","data-special")
+                  if (sci_spc_cnt == 1){
+                    disable("#sci-special-items")
+                    sci_sp_disable = 1
+                  }
+                }
+                else{
+                  sci_spc_cnt -=1;
+                  hide(i.value,".sci-specialspan","data-special")
+                  if (sci_sp_disable ==1 && sci_spc_cnt < 1){
+                    enable("#sci-special-items")
+                    sci_sp_disable = 0
+                  }
+                }
               }
             });
 
 
+          document.querySelectorAll("#sci-base-item").forEach(i => {
+                i.onclick = () => {
+                  document.querySelectorAll("#sci-base-item").forEach(i => {
+                    if (i.checked == true){
+                      reveal(i.value,".sci-basespan","data-base")
+                    }
+                    else{
+                      hide(i.value,".sci-basespan","data-base")
+                    }
+                  });
+                }
+              });
+
+
+        //************************  Helper functions ********************
         function reveal(e,selector,data){
 
           document.querySelectorAll(selector).forEach(j => {
