@@ -171,7 +171,10 @@ def Subs(request):
     od.save()
     for i in item_selections.getlist("subs"):
         obj = Menu.objects.all().filter(id=i)
-        Total_cost += obj[0].Price_small
+        if i in item_selections.getlist("subs_size"):
+                Total_cost += obj[0].Price_large
+        else:
+            Total_cost += obj[0].Price_small
         od.Others.add(obj[0])
     od.order_total = Total_cost
     od.save()
@@ -204,7 +207,10 @@ def Dine(request):
     od.save()
     for i in item_selections.getlist("dinner"):
         obj = Menu.objects.all().filter(id=i)
-        Total_cost += obj[0].Price_small
+        if i in item_selections.getlist("dinner_size"):
+            Total_cost += obj[0].Price_large
+        else:
+            Total_cost += obj[0].Price_small
         od.Others.add(obj[0])
     od.order_total = Total_cost
     od.save()

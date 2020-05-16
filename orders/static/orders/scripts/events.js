@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded",() => {
       var sci_top_disable = 0;
       var sci_sp_disable = 0;
       var sci_base_disable = 0;
-      var classitems = [".sizespan",".specialspan",".basespan",".sci-sizespan",".sci-specialspan",".sci-basespan"]
+      var classitems = [".sizespan",".specialspan",".basespan",".sci-sizespan",".sci-specialspan",".sci-basespan",".subsize",".dinsize"]
 
 
       // Initial disable of size checkboxes
@@ -141,6 +141,32 @@ document.addEventListener("DOMContentLoaded",() => {
                   });
                 }
               });
+
+
+          document.querySelectorAll("#dinner-item").forEach(i => {
+                    i.onclick = () => {
+                        if (i.checked == true){
+                          reveal(i.value,".dinsize","data-base")
+                        }
+                        else{
+                          hide(i.value,".dinsize","data-base")
+                        }
+                    }
+
+                  });
+
+         document.querySelectorAll("#sub-item").forEach(i => {
+                    i.onclick = () => {
+                          if (i.checked == true){
+                            reveal(i.value,".subsize","data-base")
+                          }
+                          else{
+                              hide(i.value,".subsize","data-base")
+                              }
+                            }
+
+                          });
+
 
 
         //************************  Helper functions ********************

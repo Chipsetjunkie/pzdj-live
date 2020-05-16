@@ -117,11 +117,11 @@
                     <div class="card" id = "Sub-card" style="width: 18rem;">
                       <div class="card-body">
                         <h5 class="card-title">Subs</h5>
-                        <form action="{% url 'subs' %}" method="post">
+                        <form id="sub-form" method="post">
                           {% csrf_token %}
                             {% for i in Subs%}
                               <div class="menu">
-                              <label><input type="checkbox" class="form-check-input" id="sub-item" value ="{{i.id}}" name="subs">{{i.name}} {{i.Price_small}}</label><br>
+                              <label><input type="checkbox" class="form-check-input" id="sub-item" value ="{{i.id}}" name="subs">{{i.name}} {{i.Price_small}} {{i.Price_large}}</label><br>
                               <span class="subsize" id="subsize{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="sub-size" name="subs_size" value="{{i.id}}" >size</label><br></span>
                               </div>
                             {%endfor%}
@@ -134,7 +134,7 @@
                       <div class="card" id = "Pasta-card" style="width: 18rem;">
                         <div class="card-body">
                           <h5 class="card-title">Pasta</h5>
-                          <form action="{% url 'pasta' %}" method="post">
+                          <form id="pasta-form" method="post">
                             {% csrf_token %}
                             {% for i in Pasta%}
                               <label><input type="checkbox" class="form-check-input" id="pasta-item" value ="{{i.id}}" name="pasta">{{i.name}} {{i.Price_small}}</label><br>
@@ -148,7 +148,7 @@
                         <div class="card" id = "Salad-card" style="width: 18rem;">
                           <div class="card-body">
                             <h5 class="card-title">Salad</h5>
-                            <form action="{% url 'salad' %}" method="post">
+                            <form id="salad-form" method="post">
                               {% csrf_token %}
                               {% for i in Salad%}
                                 <label><input type="checkbox" class="form-check-input" id="salad-item" value ="{{i.id}}" name="salad">{{i.name}} {{i.Price_small}} </label><br>
@@ -161,12 +161,12 @@
                           <div class="card" id = "Dinner-card" style="width: 18rem;">
                             <div class="card-body">
                               <h5 class="card-title">Dinner Plates</h5>
-                              <form action="{% url 'dine' %}" method="post">
+                              <form id="dinner-form" method="post">
                                 {% csrf_token %}
                                 {% for i in Dinner%}
                                   <div class="menu">
-                                  <label><input type="checkbox" class="form-check-input" id="dinner-item" value ="{{i.id}}" name="dinner">{{i.name}} {{i.Price_small}}</label><br>
-                                  <span class="dinsize" id="dinsize{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="dinner-size" name="dinner_size" value="{{i.id}}" >size</label><br></span>
+                                  <label><input type="checkbox" class="form-check-input" id="dinner-item" value ="{{i.id}}" name="dinner">{{i.name}} {{i.Price_small}} {{i.Price_large}}</label><br>
+                                  <span class="dinsize" id="dinsize{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="dinner_size" name="dinner_size" value="{{i.id}}" >size</label><br></span>
                                   </div>
                                 {%endfor%}
 
