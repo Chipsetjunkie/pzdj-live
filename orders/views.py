@@ -3,7 +3,12 @@ from .models import Menu
 from django.urls import reverse
 from orders.models import Menu,Order,Cart,RegularPrice,SicillianPrice
 from django.http import JsonResponse
+from django.conf import settings
+import stripe
 
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_version = settings.STRIPE_API_VERSION
 
 # Create your views here.
 def index(request):
@@ -22,10 +27,55 @@ def index(request):
 
     return render(request,"orders/index.html",context)
 
+# ///////    Payment Section  /////////////
+
+def get_key(request):
+    return JsonResponse({"KEY":settings.STRIPE_PUBLISHABLE_KEY})
+
+def get_amount(request):
+
+    return cart.Total
+
+def pay(request):
+    data = request.POST
+    cart= Cart.objects.all().filter(user=request.user, order_status = False).first()
+
+    try:
+            if 'paymentMethodId' in data:
+                order_amount = cart.Total*100
+                intent = stripe.PaymentIntent.create(
+                    amount= int(cart.Total * 100),
+                    description= "Init test",
+                    currency = 'usd',
+                    payment_method= data['paymentMethodId'],
+                    confirmation_method='manual',
+                    confirm=True,
+                    use_stripe_sdk= True if 'useStripeSdk' in data else None
+                    )
+            print(generate_response(intent))
+            return generate_response(intent)
+    except stripe.error.CardError as e:
+        return JsonResponse({'error':e.user_message})
+
+
+def generate_response(intent):
+    status = intent['status']
+    if status == 'requires_action' or status == 'requires_source_action':
+        return JsonResponse({'requiresAction': True, 'paymentIntentId':intent['id'], 'clientSecret': intent['client_secret']})
+
+    elif status == 'requires_payment_method' or status == 'requires_source':
+        return JsonResponse({'error':'Your card was denied, please provide a new payment method'})
+
+    elif status == 'succeeded':
+        print("payment recieved")
+        return JsonResponse({'clientSecret':intent['client_secret']})
+
+# ////  Index routes section    //////////
 
 def Regular(request):
     item_selections =request.POST
     items = {}
+    print(item_selections)
     order = [None,None,None,None,None]
     for i in ["base","items","specials"]:
         if i in item_selections:
@@ -64,7 +114,7 @@ def Regular(request):
         items['toppings']=[]
 
     if Order.objects.last() == None:
-        od = Order(1,None,*order)
+        od = Order(1,*order)
     else:
         od = Order(Order.objects.last().id+1,*order)
 
@@ -86,7 +136,7 @@ def Regular(request):
     cart.stuff.add(od)
     cart.Total += od.order_total
     cart.save()
-
+    print(order)
     #print("added!!")
     #return redirect(reverse('index'))
     #return JsonResponse({"data":updated_data(request)})
@@ -134,7 +184,7 @@ def Sicillian(request):
         items['toppings']=[]
 
     if Order.objects.last() == None:
-        od = Order(1,None,*order)
+        od = Order(1,*order)
     else:
         od = Order(Order.objects.last().id+1,*order)
 
@@ -298,6 +348,7 @@ def Pasta(request):
 
     return redirect(reverse("index"))
 
+# ////////        Cart Section  //////////
 
 def Checkout_cart(request):
     context = {
@@ -305,7 +356,7 @@ def Checkout_cart(request):
     }
     return render(request,"orders/cart.html",context)
 
-## Clear cart
+
 def clear(request):
     cart = Cart.objects.all().filter(user=request.user, order_status = False)
     cart_items = cart.first().stuff.all()
@@ -315,7 +366,7 @@ def clear(request):
         Order.objects.all().filter(pk=i).delete()
     return redirect(reverse('index'))
 
-## Helper Functions
+# ///////  Helper Functions         ///////
 def get_price(items,tag):
     r = tag.objects.first()
     sm_price = r.get_small()

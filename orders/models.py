@@ -31,12 +31,20 @@ class Order(models.Model):
     order_total = models.FloatField(default= 0.0)
 
     def __str__(self):
-            string = "Base:{0} | Toppings:{1}, {2}, {3} | special:{4} |".format(self.Base,self.item_1,self.item_2,self.item_3,self.Special)
-            #print(string)
-            clean_string = re.sub(r"[A-Za-z]+:[None | None,{3}]+","",string).strip()[: -1]
-            #print(clean_string)
-            clean_string = re.sub(r",\sNone","",clean_string).strip()
-            return clean_string
+            if self.Base == None:
+                result="Fillings:"
+                for i in self.Others.all():
+                    result +=" "+i.name+","
+
+                return result
+   
+            else:
+                string = "Base:{0} | Toppings:{1}, {2}, {3} | special:{4} |".format(self.Base,self.item_1,self.item_2,self.item_3,self.Special)
+                print(string)
+                clean_string = re.sub(r"[A-Za-z]+:[None | None,{3}]+","",string).strip()[: -1]
+                #print(clean_string)
+                clean_string = re.sub(r",\sNone","",clean_string).strip()
+                return clean_string
 
 
 

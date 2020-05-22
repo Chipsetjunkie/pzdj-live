@@ -115,6 +115,10 @@ USE_L10N = True
 USE_TZ = True
 
 
+STRIPE_PUBLISHABLE_KEY = "pk_test_BPSMvlAcaImNeLlf6QqQ47UM004vowjxQ5"
+STRIPE_SECRET_KEY = "sk_test_UC3syyzlb4zaWgWx8W8OeGtG00uCZPVIr7"
+STRIPE_API_VERSION = "2020-03-02"
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 

@@ -2,11 +2,15 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cart</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
     {% load static %}
     <link rel="stylesheet" href="{% static 'orders/styling/cart.css' %}">
     <script src="{% static 'orders/scripts/cart.js'%}"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
 
   </head>
   <body>
@@ -14,6 +18,7 @@
       <div class="grid-item-1">
         <div id="address">
               <form method="post">
+                {% csrf_token %}
                 <label></label><br>
                 <input type="text" class="innertext" placeholder="Name"><br>
                 <input type="text" class="innertext" placeholder="Address 1"><br>
@@ -24,6 +29,11 @@
                 <input type="text" class="innertext" placeholder="Telephone"><br>
                 <label></label>
               </form>
+        </div>
+        <div class="payment">
+            <form id="payment-form" method="post">
+              {% csrf_token %}
+            </form>
         </div>
       </div>
       <div class="grid-item-4"></div>
@@ -36,10 +46,15 @@
 
             <div id="contents">
             {% for i in cart.stuff.all%}
-              <p id="menutype"><b>{{i.Base.menucategory}}</b></p>
-              <small><p id="ingredients">{{i}}</p></small>
-              <hr>
-
+              {% if i.Base != None %}
+                    <p id="menutype"><b>{{i.Base.menucategory}}</b></p>
+                    <small><p id="ingredients">{{i}}</p></small>
+                    <hr>
+              {% else %}
+                    <p id="menutype"><b>{{i.Others.all.first.menucategory}}</b></p>
+                    <small><p id="ingredients">{{i}}</p></small>
+                    <hr>
+              {% endif %}
             {% endfor %}
           </div>
           <div id="carttotal"><p><b>total:<span id="amount">{{cart.Total}}$ </span> </b></p></div>

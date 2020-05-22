@@ -1,10 +1,9 @@
 document.addEventListener("DOMContentLoaded", () =>{
-      var server_response = ["potato"];
+
       console.log("server comm loaded")
       document.querySelector("#regular-form").onsubmit = function(event){
 
             event.preventDefault();
-            console.log(server_response);
             process("#regular-form",'added/')
             document.querySelector("#cart-section").innerHTML = button();
 
@@ -12,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () =>{
 
       document.querySelector("#sicillian-form").onsubmit = function(event){
             event.preventDefault();
-            console.log(server_response);
             process("#sicillian-form",'addeds/')
             document.querySelector("#cart-section").innerHTML = button();
 
@@ -20,28 +18,24 @@ document.addEventListener("DOMContentLoaded", () =>{
 
       document.querySelector("#pasta-form").onsubmit = function(event){
             event.preventDefault();
-            console.log(server_response);
             process("#pasta-form",'pasta/')
             document.querySelector("#cart-section").innerHTML = button();
 
       }
       document.querySelector("#salad-form").onsubmit = function(event){
             event.preventDefault();
-            console.log(server_response);
             process("#salad-form",'salad/')
             document.querySelector("#cart-section").innerHTML = button();
 
       }
       document.querySelector("#sub-form").onsubmit = function(event){
             event.preventDefault();
-            console.log(server_response);
             process("#sub-form",'subs/')
             document.querySelector("#cart-section").innerHTML = button();
 
       }
       document.querySelector("#dinner-form").onsubmit = function(event){
             event.preventDefault();
-            console.log(server_response);
             process("#dinner-form",'dine/')
             document.querySelector("#cart-section").innerHTML = button();
 
@@ -53,9 +47,9 @@ document.addEventListener("DOMContentLoaded", () =>{
 function process(tag,route){
     var request = new XMLHttpRequest();
     request.open('POST',route);
-    var formdata = new FormData(document.querySelector(tag))
+    var formdata = new FormData(document.querySelector(tag));
     request.send(formdata);
-    console.log(request.response)
+    console.log(request.response);
 }
 
 
