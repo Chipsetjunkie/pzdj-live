@@ -102,6 +102,48 @@
   font-family: sans-serif;
 }
 
+.dropdown{
+  margin-top: 0.7%;
+  margin-right: 3%;
+  height: auto;
+}
+
+.dropdown-content{
+    color:black;
+    font-size: 12px;
+    font-family: sans-serif;
+  }
+
+.dropdown-items{
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  width:90px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+
+}
+
+.dropdown-items a {
+  font-family: sans-serif;
+  font-size: 12px;
+  color: black;
+  padding: 20%;
+  text-decoration: none;
+  display: block;
+}
+
+
+.dropdown-items a:hover{
+    text-decoration: underline;
+}
+
+.dropdown:hover .dropdown-items{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+
+}
 
 .card-body{
   margin-left: 10%;

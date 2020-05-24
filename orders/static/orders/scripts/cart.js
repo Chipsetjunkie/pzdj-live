@@ -29,6 +29,7 @@ fetch("/stripe-key")
         card_info[2].mount(".card-cvv")
     });
 
+
     document.querySelector('#cancel-button').addEventListener('click' ,() =>{
             location.reload()
     });
@@ -45,14 +46,20 @@ fetch("/stripe-key")
                       form.append("paymentMethodId",result.paymentMethod.id)
                       config = {method:"POST",body:form}
                       fetch('pay',config)
-                      .then(response => {
-                           return response.json()
-                      }).then( json => {
-                        if (json.error) {
-                          showError(json.error);
-                        } else {
-                          console.log("Payment succeded");
-
+                      .then(result => {
+                           return result.json()
+                      }).then( response => {
+                        if (response.error) {
+                          showError(response.error);
+                        } else if(response.requiresAction){
+                          console.log("entered")
+                          handleAction(response.clientSecret)
+                        }
+                        else {
+                            document.querySelector(".error-area").textContent = "Payment successfull";
+                          setTimeout(function() {
+                            document.querySelector(".error-area").textContent= "";
+                          }, 5000);
                         }
                       })
                 }
@@ -63,6 +70,10 @@ fetch("/stripe-key")
 
     });
 });
+
+//    HELPER FUNCTIONS
+
+// DOM RELATED
 
 function stripe_form(){
 
@@ -103,6 +114,7 @@ function cancelbutton(){
       return cancel.outerHTML;
 }
 
+// PAYMENT RELATED
 
 function setup(data){
         stripe = Stripe(data.KEY)
@@ -133,39 +145,37 @@ function setup(data){
 }
 
 
+function showError(errorMsgText) {
+  var errorMsg = document.querySelector(".error-area");
+  errorMsg.textContent = errorMsgText;
+  setTimeout(function() {
+    errorMsg.textContent = "";
+  }, 4000);
+};
 
-function form(){
 
-      var card_input = document.createElement('input');
-      var row_1 = document.createElement('div');
-      var row_2 = document.createElement('div');
-      var month_input = document.createElement('input');// cardn-input
-      var year_input = document.createElement('input');// cardex_input
-      var cvv_input = document.createElement('input');//cardcvv_input
-      var form = document.createElement('form');
-      var space = document.createElement('span');
-
-      card_input.setAttribute('type','text')
-      card_input.setAttribute('class','innertext')
-      card_input.setAttribute('placeholder','card number')
-      month_input.setAttribute('type','text')
-      month_input.setAttribute('class','innertext')
-      month_input.setAttribute('placeholder','Month')
-      year_input.setAttribute('type','text')
-      year_input.setAttribute('class','innertext')
-      year_input.setAttribute('placeholder','Year')
-      cvv_input.setAttribute('type','text')
-      cvv_input.setAttribute('class','innertext')
-      cvv_input.setAttribute('placeholder','cvv')
-
-      row_1.setAttribute('class','row1');
-      row_2.setAttribute('class','row2');
-
-      form.setAttribute('method','post')
-
-      row_1.innerHTML = card_input.outerHTML;
-      row_2.innerHTML = month_input.outerHTML + space.outerHTML+ year_input.outerHTML+ space.outerHTML + cvv_input.outerHTML;
-      form.innerHTML = row_1.outerHTML + row_2.outerHTML;
-
-      return form.outerHTML;
-}
+function handleAction(clientSecret) {
+  stripe.handleCardAction(clientSecret).then(function(data) {
+    if (data.error) {
+      showError("Your card was not authenticated, please try again");
+    }
+    else if (data.paymentIntent.status === "requires_confirmation") {
+      var form = new FormData(document.querySelector("#payment-form"))
+      form.append("paymentMethodId",result.paymentMethod.id)
+      config = {method:"POST",body:form}
+      fetch('pay',config)
+        .then(function(result) {
+          return result.json();
+        })
+        .then(function(json) {
+          if (json.error) {
+            showError(json.error);
+          } else {
+            setTimeout(function() {
+              document.querySelector(".error-area").textContent= "Payment Completed"
+            }, 200);
+          }
+        });
+    }
+  });
+};

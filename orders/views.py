@@ -23,7 +23,7 @@ def index(request):
         'Pasta': Menu.objects.all().filter(menucategory='Pasta'),
         'Salad': Menu.objects.all().filter(menucategory='Salad'),
         'Dinner': Menu.objects.all().filter(menucategory='Dinner'),
-        'cart': Cart.objects.all().filter(user=request.user, order_status = False)
+        'cart': Cart.objects.all().filter(user=str(request.user), order_status = False)
     }
 
 
@@ -53,7 +53,7 @@ def pay(request):
                     confirm=True,
                     use_stripe_sdk= True if 'useStripeSdk' in data else None
                     )
-            print(generate_response(intent))
+            #print(generate_response(intent))
             return generate_response(intent)
     except stripe.error.CardError as e:
         return JsonResponse({'error':e.user_message})
@@ -68,7 +68,7 @@ def generate_response(intent):
         return JsonResponse({'error':'Your card was denied, please provide a new payment method'})
 
     elif status == 'succeeded':
-        print("payment recieved")
+        #print("payment recieved")
         return JsonResponse({'clientSecret':intent['client_secret']})
 
 # ////  Index routes section    //////////
@@ -76,7 +76,7 @@ def generate_response(intent):
 def Regular(request):
     item_selections =request.POST
     items = {}
-    print(item_selections)
+    #print(item_selections)
     order = [None,None,None,None,None]
     for i in ["base","items","specials"]:
         if i in item_selections:
@@ -120,16 +120,16 @@ def Regular(request):
         od = Order(Order.objects.last().id+1,*order)
 
 
-    if Cart.objects.all().filter(user = request.user).last() == None:
+    if Cart.objects.all().filter(user = str(request.user)).last() == None:
         if Cart.objects.last() == None:
-            cart = Cart(1,user = request.user)
+            cart = Cart(1,user = str(request.user))
 
         else:
-            cart = Cart(Cart.objects.last().id + 1,user = request.user)
+            cart = Cart(Cart.objects.last().id + 1,user = str(request.user))
 
         cart.save()
     else:
-        cart = Cart.objects.all().filter(user = request.user).first()
+        cart = Cart.objects.all().filter(user = str(request.user)).first()
 
 
     od.order_total = round(get_price(items,RegularPrice),2)
@@ -141,7 +141,7 @@ def Regular(request):
     #print("added!!")
     #return redirect(reverse('index'))
     #return JsonResponse({"data":updated_data(request)})
-    return "r-updated!"
+    return HttpResponse("r-updated!")
 
 def Sicillian(request):
     item_selections =request.POST
