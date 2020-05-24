@@ -2,9 +2,6 @@ from django.db import models
 import re
 # Create your models here
 
-class Profile(models.Model):
-    username = models.CharField(max_length = 120, unique = True )
-
 
 class Menu(models.Model):
     food_choices = [('Toppings','Tops'), ('Subs','Subs'), ('Pasta','Pasta'), ('Salad','Salad'), ('Dinner','Dine'), ('Base','base')]
@@ -37,7 +34,7 @@ class Order(models.Model):
                     result +=" "+i.name+","
 
                 return result
-   
+
             else:
                 string = "Base:{0} | Toppings:{1}, {2}, {3} | special:{4} |".format(self.Base,self.item_1,self.item_2,self.item_3,self.Special)
                 print(string)
@@ -54,11 +51,6 @@ class Cart(models.Model):
     stuff = models.ManyToManyField(Order)
     order_status = models.BooleanField(default = False)
     Total = models.FloatField(default= 0.0)
-
-
-class Profile_orders(models.Model):
-    user = models.ForeignKey(Profile,on_delete=models.CASCADE)
-    orders = models.ManyToManyField(Cart)
 
 
 class RegularPrice(models.Model):

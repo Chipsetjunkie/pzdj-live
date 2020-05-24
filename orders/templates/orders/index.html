@@ -10,16 +10,38 @@
   </head>
 
   <body>
+    <div class="jumbotron jumbotron-fluid">
+      <nav class="top">
+            <div class="nav-contents">
+                  <a href="#">Pizzas</a>
+                  <a href="#Other-items">Menu</a>
+                  <a href="#">Directions</a>
+                  <a href="#">Hours</a>
+                  <a href="#">contacts</a>
+                  {% if user.is_authenticated %}
+                  <a href="#">Profile</a>
+                  <a href="#">Cart</a>
+                  {% else %}
+                  <a href="{% url 'login' %}">Login</a>
+                  {% endif %}
+                  <a href="#">Attr</a>
+            </div>
+
+            <div id= "cart-section">
+                {% if cart.first == None %}
+                <button id="cart-button" type="button" class="btn btn-outline-warning">Cart</button>
+                {% else %}
+                <a href="{% url 'cart'%}"><button type="button" class="btn btn-warning">Cart</button></a>
+                {% endif %}
+            </div>
+      </nav>
+
+  <div class="container">
+    <h1 class="display-1">Fluid jumbotron</h1>
+    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+  </div>
+</div>
     <!-- Cart Button -->
-  <nav>
-        <div id= "cart-section">
-            {% if cart.first == None %}
-            <button id="cart-button" type="button" class="btn btn-outline-warning">Cart</button>
-            {% else %}
-            <a href="{% url 'cart'%}"><button type="button" class="btn btn-warning">Cart</button></a>
-            {% endif %}
-        </div>
-  </nav>
 
     <div id='Menu-cards'>
           <!-- Regular Items -->
@@ -33,34 +55,45 @@
                       <b>Base</b><br>
                       {% for i in Reg_tops %}
                         {% if i.foodcategory == 'Base' %}
-                          {% if i.name == "Cheese"%}
-                          <div>
-                          <label><input type="radio" id="base-item" class="form-check-input" value ="{{i.id}}" name="base" checked>{{i.name}}</label>
-                          <span class="basespan" id="basespan{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="base-size" name="base_size" value="{{i.id}}" >size</label><br></span>
-                          </div>
-                          {% else%}
-                          <div>
-                          <label><input type="radio" id="base-item" class="form-check-input" value ="{{i.id}}" name="base">{{i.name}}</label>
-                          <span class="basespan" id="basespan{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="base-size" name="base_size" value="{{i.id}}" >size</label><br></span>
-                          </div>
-                          {% endif %}
+                            {% if user.is_authenticated%}
+                                <div>
+                                <label><input type="radio" id="base-item" class="form-check-input" value ="{{i.id}}" name="base" checked>{{i.name}}</label>
+                                <span class="basespan" id="basespan{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="base-size" name="base_size" value="{{i.id}}" >size</label><br></span>
+                                </div>
+                            {% else %}
+                                <div >
+                                    <p>{{i}}</p>
+                                </div>
+                            {%endif%}
                         {% endif %}
                       {% endfor %}
                       <b>Toppings</b><br>
                         {% for i in Reg_tops %}
                           {% if i.foodcategory != 'Base' %}
-                          <div>
-                          <label><input type="checkbox" id="items" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
-                          <span class="sizespan" id="sizespan{{i.id}}" data-value={{i.id}}><label><input type="checkbox" id="items-size" name="items_size" value="{{i.id}}" >size</label><br></span>
-                          </div>
+                            {% if user.is_authenticated %}
+                                <div>
+                                  <label><input type="checkbox" id="items" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                                  <span class="sizespan" id="sizespan{{i.id}}" data-value={{i.id}}><label><input type="checkbox" id="items-size" name="items_size" value="{{i.id}}" >size</label><br></span>
+                                </div>
+                            {% else %}
+                                <div>
+                                    <p>{{i}}</p>
+                                </div>
+                            {%endif%}
                           {% endif %}
                         {% endfor %}
                         <b>Specials</b><br>
                           {% for i in Reg_spec %}
+                            {% if user.is_authenticated %}
                             <div>
                             <label><input type="checkbox" class="form-check-input" id="special-items" value ="{{i.id}}" name="specials">{{i.name}}</label>
                             <span class="specialspan" id="specialspan{{i.id}}" data-special={{i.id}}><label><input type="checkbox" name="specials_size" value="{{i.id}}" >size</label><br></span>
-                          </div>
+                            </div>
+                            {% else %}
+                            <div>
+                                <p>{{i}}</p>
+                            </div>
+                            {%endif%}
                           {% endfor %}
                         <input type="submit"  value="Add">
                     </form>
@@ -78,34 +111,45 @@
                       <b>Base</b><br>
                       {% for i in Sci_tops %}
                         {% if i.foodcategory == 'Base' %}
-                          {% if i.name == "Cheese"%}
-                          <div>
-                          <label><input type="radio" id="sci-base-item" class="form-check-input" value ="{{i.id}}" name="base" checked>{{i.name}}</label>
-                          <span class="sci-basespan" id="sci-basespan{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="base-size" name="base_size" value="{{i.id}}" >size</label><br></span>
-                          </div>
-                          {% else%}
-                          <div>
-                          <label><input type="radio" id="sci-base-item" class="form-check-input" value ="{{i.id}}" name="base">{{i.name}}</label>
-                          <span class="sci-basespan" id="sci-basespan{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="base-size" name="base_size" value="{{i.id}}" >size</label><br></span>
-                          </div>
-                          {% endif %}
+                          {% if user.is_authenticated%}
+                              <div>
+                              <label><input type="radio" id="sci-base-item" class="form-check-input" value ="{{i.id}}" name="base" checked>{{i.name}}</label>
+                              <span class="sci-basespan" id="sci-basespan{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="base-size" name="base_size" value="{{i.id}}" >size</label><br></span>
+                              </div>
+                          {% else %}
+                              <div>
+                                  <p>{{i}}</p>
+                              </div>
+                          {%endif%}
                         {% endif %}
                       {% endfor %}
                       <b>Toppings</b><br>
                         {% for i in Sci_tops %}
                           {% if i.foodcategory != 'Base' %}
-                          <div>
-                          <label><input type="checkbox" id="sci-items" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
-                          <span class="sci-sizespan" id="sci-sizespan{{i.id}}" data-value={{i.id}}><label><input type="checkbox" id="items-size" name="items_size" value="{{i.id}}" >size</label><br></span>
-                          </div>
+                          {% if user.is_authenticated %}
+                              <div>
+                              <label><input type="checkbox" id="sci-items" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                              <span class="sci-sizespan" id="sci-sizespan{{i.id}}" data-value={{i.id}}><label><input type="checkbox" id="items-size" name="items_size" value="{{i.id}}" >size</label><br></span>
+                              </div>
+                          {% else %}
+                              <div>
+                                  <p>{{i}}</p>
+                              </div>
+                          {%endif%}
                           {% endif %}
                         {% endfor %}
                         <b>Specials</b><br>
                           {% for i in Sci_spec %}
-                            <div>
-                            <label><input type="checkbox" class="form-check-input" id="sci-special-items" value ="{{i.id}}" name="specials">{{i.name}}</label>
-                            <span class="sci-specialspan" id="sci-specialspan{{i.id}}" data-special={{i.id}}><label><input type="checkbox" name="specials_size" value="{{i.id}}" >size</label><br></span>
-                          </div>
+                          {% if user.is_authenticated%}
+                                <div>
+                                <label><input type="checkbox" class="form-check-input" id="sci-special-items" value ="{{i.id}}" name="specials">{{i.name}}</label>
+                                <span class="sci-specialspan" id="sci-specialspan{{i.id}}" data-special={{i.id}}><label><input type="checkbox" name="specials_size" value="{{i.id}}" >size</label><br></span>
+                              </div>
+                          {% else %}
+                              <div>
+                                  <p>{{i}}</p>
+                              </div>
+                          {%endif%}
                           {% endfor %}
                         <input type="submit"  value="Add">
                     </form>
@@ -121,10 +165,16 @@
                         <form id="sub-form" method="post">
                           {% csrf_token %}
                             {% for i in Subs%}
+                              {% if user.is_authenticated %}
                               <div class="menu">
                               <label><input type="checkbox" class="form-check-input" id="sub-item" value ="{{i.id}}" name="subs">{{i.name}} {{i.Price_small}} {{i.Price_large}}</label><br>
                               <span class="subsize" id="subsize{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="sub-size" name="subs_size" value="{{i.id}}" >size</label><br></span>
                               </div>
+                              {% else %}
+                                  <div>
+                                      <p>{{i}}</p>
+                                  </div>
+                              {%endif%}
                             {%endfor%}
                             <input type="submit"  value="Add">
                         </form>
@@ -138,7 +188,13 @@
                           <form id="pasta-form" method="post">
                             {% csrf_token %}
                             {% for i in Pasta%}
+                              {% if user.is_authenticated %}
                               <label><input type="checkbox" class="form-check-input" id="pasta-item" value ="{{i.id}}" name="pasta">{{i.name}} {{i.Price_small}}</label><br>
+                              {% else %}
+                                  <div>
+                                      <p>{{i}}</p>
+                                  </div>
+                              {%endif%}
                             {%endfor%}
                             <input type="submit"  value="Add">
                           </form>
@@ -152,7 +208,13 @@
                             <form id="salad-form" method="post">
                               {% csrf_token %}
                               {% for i in Salad%}
+                                {% if user.is_authenticated %}
                                 <label><input type="checkbox" class="form-check-input" id="salad-item" value ="{{i.id}}" name="salad">{{i.name}} {{i.Price_small}} </label><br>
+                                {% else %}
+                                    <div>
+                                        <p>{{i}}</p>
+                                    </div>
+                                {%endif%}
                               {%endfor%}
                                 <input type="submit"  value="Add">
                             </form>
@@ -165,10 +227,16 @@
                               <form id="dinner-form" method="post">
                                 {% csrf_token %}
                                 {% for i in Dinner%}
+                                  {% if user.is_authenticated %}
                                   <div class="menu">
                                   <label><input type="checkbox" class="form-check-input" id="dinner-item" value ="{{i.id}}" name="dinner">{{i.name}} {{i.Price_small}} {{i.Price_large}}</label><br>
                                   <span class="dinsize" id="dinsize{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="dinner_size" name="dinner_size" value="{{i.id}}" >size</label><br></span>
                                   </div>
+                                  {% else %}
+                                      <div>
+                                          <p>{{i}}</p>
+                                      </div>
+                                  {%endif%}
                                 {%endfor%}
 
                                 <input type="submit"  value="Add">

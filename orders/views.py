@@ -2,6 +2,7 @@ from django.shortcuts import render,HttpResponse, redirect
 from .models import Menu
 from django.urls import reverse
 from orders.models import Menu,Order,Cart,RegularPrice,SicillianPrice
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.conf import settings
 import stripe
@@ -25,15 +26,15 @@ def index(request):
         'cart': Cart.objects.all().filter(user=request.user, order_status = False)
     }
 
+
     return render(request,"orders/index.html",context)
 
 # ///////    Payment Section  /////////////
-
+@login_required
 def get_key(request):
     return JsonResponse({"KEY":settings.STRIPE_PUBLISHABLE_KEY})
 
 def get_amount(request):
-
     return cart.Total
 
 def pay(request):
@@ -349,14 +350,14 @@ def Pasta(request):
     return redirect(reverse("index"))
 
 # ////////        Cart Section  //////////
-
+@login_required
 def Checkout_cart(request):
     context = {
     'cart': Cart.objects.all().filter(user=request.user, order_status = False).first()
     }
     return render(request,"orders/cart.html",context)
 
-
+@login_required
 def clear(request):
     cart = Cart.objects.all().filter(user=request.user, order_status = False)
     cart_items = cart.first().stuff.all()

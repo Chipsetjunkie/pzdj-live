@@ -14,6 +14,7 @@ urlpatterns = [
         path('salad/',views.Salad, name="salad"),
         path('cart/',views.Checkout_cart, name="cart"),
         path('stripe-key',views.get_key,name="stripe"),
-        path('cart/amount',views.get_amount,name="amount"),
         path('cart/pay',views.pay,name="pay")
 ]
+
+# stripe key, pay  --security check 
