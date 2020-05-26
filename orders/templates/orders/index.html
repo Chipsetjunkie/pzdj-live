@@ -55,56 +55,75 @@
           <div id="pizza-items">
                 <div class="card" id = "Pizza-card" style="width: 18rem;">
                   <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <form id="regular-form" method="post">
-                    <!--<form action="{% url 'add'%}" method="post"> -->
-                      {% csrf_token %}
-                      <b>Base</b><br>
-                      {% for i in Reg_tops %}
-                        {% if i.foodcategory == 'Base' %}
-                            {% if user.is_authenticated%}
-                                <div>
-                                <label><input type="radio" id="base-item" class="form-check-input" value ="{{i.id}}" name="base" checked>{{i.name}}</label>
-                                <span class="basespan" id="basespan{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="base-size" name="base_size" value="{{i.id}}" >size</label><br></span>
-                                </div>
-                            {% else %}
-                                <div >
-                                    <p>{{i}}</p>
-                                </div>
-                            {%endif%}
-                        {% endif %}
-                      {% endfor %}
-                      <b>Toppings</b><br>
-                        {% for i in Reg_tops %}
-                          {% if i.foodcategory != 'Base' %}
-                            {% if user.is_authenticated %}
-                                <div>
-                                  <label><input type="checkbox" id="items" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
-                                  <span class="sizespan" id="sizespan{{i.id}}" data-value={{i.id}}><label><input type="checkbox" id="items-size" name="items_size" value="{{i.id}}" >size</label><br></span>
-                                </div>
-                            {% else %}
-                                <div>
-                                    <p>{{i}}</p>
-                                </div>
-                            {%endif%}
-                          {% endif %}
-                        {% endfor %}
-                        <b>Specials</b><br>
-                          {% for i in Reg_spec %}
-                            {% if user.is_authenticated %}
-                            <div>
-                            <label><input type="checkbox" class="form-check-input" id="special-items" value ="{{i.id}}" name="specials">{{i.name}}</label>
-                            <span class="specialspan" id="specialspan{{i.id}}" data-special={{i.id}}><label><input type="checkbox" name="specials_size" value="{{i.id}}" >size</label><br></span>
-                            </div>
-                            {% else %}
-                            <div>
-                                <p>{{i}}</p>
-                            </div>
-                            {%endif%}
+                    <div class="card-bodyarea">
+                        <form id="regular-form" method="post">
+                        <!--<form action="{% url 'add'%}" method="post"> -->
+                          {% csrf_token %}
+                          <b>Base</b><br><br>
+                          {% for i in Reg_tops %}
+                            {% if i.foodcategory == 'Base' %}
+                                {% if user.is_authenticated%}
+                                    <div class="options">
+                                        <label class="menu-input"><input type="radio" id="base-item" class="form-check-input" value ="{{i.id}}" name="base" checked>{{i.name}}</label>
+                                        <span class="basespan" id="basespan{{i.id}}" data-base={{i.id}}><label>
+                                          <label class="size-button">
+                                              <input type="checkbox" id="base-size" name="base_size" value="{{i.id}}">
+                                              <span class="size-text">LARGE</span>
+                                              <span class="background"></span>
+                                          </label><br></span>
+                                    </div>
+                                {% else %}
+                                    <div >
+                                        <p>{{i}}</p>
+                                    </div>
+                                {%endif%}
+                            {% endif %}
                           {% endfor %}
-                          {% if user.is_authenticated %}
-                        <input type="submit"  value="Add">
-                          {% endif %}
+                          <b>Toppings</b><br><br>
+                            {% for i in Reg_tops %}
+                              {% if i.foodcategory != 'Base' %}
+                                {% if user.is_authenticated %}
+                                    <div class="options">
+                                      <label class="menu-input"><input type="checkbox" id="items" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                                      <span class="sizespan" id="sizespan{{i.id}}" data-value={{i.id}}>
+                                        <label class="size-button">
+                                          <input type="checkbox" id="items-size" name="items_size" value="{{i.id}}" >
+                                          <span class="size-text">LARGE</span>
+                                          <span class="background"></span>
+                                        </label><br></span>
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <p>{{i}}</p>
+                                    </div>
+                                {%endif%}
+                              {% endif %}
+                            {% endfor %}
+                            <b>Specials</b><br><br>
+                              {% for i in Reg_spec %}
+                                {% if user.is_authenticated %}
+                                <div class="options">
+                                <label class="menu-input"><input type="checkbox" class="form-check-input" id="special-items" value ="{{i.id}}" name="specials">{{i.name}}</label>
+                                <span class="specialspan" id="specialspan{{i.id}}" data-special={{i.id}}>
+                                  <label class="size-button">
+                                    <input type="checkbox" name="specials_size" value="{{i.id}}">
+                                    <span class="size-text">LARGE</span>
+                                    <span class="background"></span>
+                                  </label><br></span>
+
+                                </div>
+                                {% else %}
+                                <div>
+                                    <p>{{i}}</p>
+                                </div>
+                                {%endif%}
+                              {% endfor %}
+                            </div>
+                        <div class="custom-card-footer">
+                            {% if user.is_authenticated %}
+                          <input type="submit"  id="submit" value="Add">
+                            {% endif %}
+                        </div>
                     </form>
                   </div>
                 </div>
@@ -113,56 +132,76 @@
                   <!-- Sicillian Items -->
                 <div class="card" id = "Sicillian-card" style="width: 18rem;">
                   <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
                       <form id="sicillian-form" method="post">
                     <!--<form action="{% url 'add'%}" method="post"> -->
-                      {% csrf_token %}
-                      <b>Base</b><br>
-                      {% for i in Sci_tops %}
-                        {% if i.foodcategory == 'Base' %}
-                          {% if user.is_authenticated%}
-                              <div>
-                              <label><input type="radio" id="sci-base-item" class="form-check-input" value ="{{i.id}}" name="base" checked>{{i.name}}</label>
-                              <span class="sci-basespan" id="sci-basespan{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="base-size" name="base_size" value="{{i.id}}" >size</label><br></span>
+                        <div class="card-bodyarea">
+                            {% csrf_token %}
+                            <b>Base</b><br><br>
+                            {% for i in Sci_tops %}
+                              {% if i.foodcategory == 'Base' %}
+                                {% if user.is_authenticated%}
+                                    <div class="options">
+                                    <label class="menu-input"><input type="radio" id="sci-base-item" class="form-check-input" value ="{{i.id}}" name="base" checked>{{i.name}}</label>
+                                    <span class="sci-basespan" id="sci-basespan{{i.id}}" data-base={{i.id}}>
+                                      <label class="size-button">
+                                        <input type="checkbox" id="base-size" name="base_size" value="{{i.id}}">
+                                        <span class="size-text">LARGE</span>
+                                        <span class="background"></span>
+                                      </label><br></span>
+
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <p>{{i}}</p>
+                                    </div>
+                                {%endif%}
+                              {% endif %}
+                            {% endfor %}
+                            <b>Toppings</b><br><br>
+                              {% for i in Sci_tops %}
+                                {% if i.foodcategory != 'Base' %}
+                                {% if user.is_authenticated %}
+                                    <div class="options">
+                                    <label class="menu-input"><input type="checkbox" id="sci-items" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
+                                    <span class="sci-sizespan" id="sci-sizespan{{i.id}}" data-value={{i.id}}>
+                                      <label class="size-button">
+                                        <input type="checkbox" id="items-size" name="items_size" value="{{i.id}}">
+                                        <span class="size-text">LARGE</span>
+                                        <span class="background"></span>
+                                      </label><br></span>
+
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <p>{{i}}</p>
+                                    </div>
+                                {%endif%}
+                                {% endif %}
+                              {% endfor %}
+                              <b>Specials</b><br><br>
+                                {% for i in Sci_spec %}
+                                {% if user.is_authenticated%}
+                                      <div class="options">
+                                      <label class="menu-input"><input type="checkbox" class="form-check-input" id="sci-special-items" value ="{{i.id}}" name="specials">{{i.name}}</label>
+                                      <span class="sci-specialspan" id="sci-specialspan{{i.id}}" data-special={{i.id}}>
+                                        <label class="size-button">
+                                          <input type="checkbox" name="specials_size" value="{{i.id}}">
+                                          <span class="size-text">LARGE</span>
+                                          <span class="background"></span>
+                                        </label><br></span>
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <p>{{i}}</p>
+                                    </div>
+                                {%endif%}
+                                {% endfor %}
                               </div>
-                          {% else %}
-                              <div>
-                                  <p>{{i}}</p>
-                              </div>
-                          {%endif%}
-                        {% endif %}
-                      {% endfor %}
-                      <b>Toppings</b><br>
-                        {% for i in Sci_tops %}
-                          {% if i.foodcategory != 'Base' %}
-                          {% if user.is_authenticated %}
-                              <div>
-                              <label><input type="checkbox" id="sci-items" class="form-check-input" value ="{{i.id}}" name="items">{{i.name}}</label>
-                              <span class="sci-sizespan" id="sci-sizespan{{i.id}}" data-value={{i.id}}><label><input type="checkbox" id="items-size" name="items_size" value="{{i.id}}" >size</label><br></span>
-                              </div>
-                          {% else %}
-                              <div>
-                                  <p>{{i}}</p>
-                              </div>
-                          {%endif%}
-                          {% endif %}
-                        {% endfor %}
-                        <b>Specials</b><br>
-                          {% for i in Sci_spec %}
-                          {% if user.is_authenticated%}
-                                <div>
-                                <label><input type="checkbox" class="form-check-input" id="sci-special-items" value ="{{i.id}}" name="specials">{{i.name}}</label>
-                                <span class="sci-specialspan" id="sci-specialspan{{i.id}}" data-special={{i.id}}><label><input type="checkbox" name="specials_size" value="{{i.id}}" >size</label><br></span>
-                              </div>
-                          {% else %}
-                              <div>
-                                  <p>{{i}}</p>
-                              </div>
-                          {%endif%}
-                          {% endfor %}
-                          {% if user.is_authenticated %}
-                        <input type="submit"  value="Add">
-                          {% endif %}
+                              <div class="custom-card-footer">
+                                {% if user.is_authenticated %}
+                              <input type="submit"  id="submit" value="Add">
+                              {% endif %}
+                            </div>
                     </form>
                   </div>
                 </div>
@@ -178,8 +217,14 @@
                             {% for i in Subs%}
                               {% if user.is_authenticated %}
                               <div class="menu">
-                              <label><input type="checkbox" class="form-check-input" id="sub-item" value ="{{i.id}}" name="subs">{{i.name}} {{i.Price_small}} {{i.Price_large}}</label><br>
-                              <span class="subsize" id="subsize{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="sub-size" name="subs_size" value="{{i.id}}" >size</label><br></span>
+                              <label class="menu-input"><input type="checkbox" class="form-check-input" id="sub-item" value ="{{i.id}}" name="subs">{{i.name}} {{i.Price_small}} {{i.Price_large}}</label><br>
+                              <span class="subsize" id="subsize{{i.id}}" data-base={{i.id}}>
+                                <label class="size-button">
+                                  <input type="checkbox" id="sub-size" name="subs_size" value="{{i.id}}">
+                                  <span class="size-text">LARGE</span>
+                                  <span class="background"></span>
+                                </label><br></span>
+
                               </div>
                               {% else %}
                                   <div>
@@ -188,7 +233,7 @@
                               {%endif%}
                             {%endfor%}
                             {% if user.is_authenticated %}
-                          <input type="submit"  value="Add">
+                          <input type="submit"  id="submit" value="Add">
                             {% endif %}
                         </form>
                       </div>
@@ -210,7 +255,7 @@
                               {%endif%}
                             {%endfor%}
                             {% if user.is_authenticated %}
-                          <input type="submit"  value="Add">
+                          <input type="submit"  id="submit" value="Add">
                             {% endif %}
                           </form>
                         </div>
@@ -232,7 +277,7 @@
                                 {%endif%}
                               {%endfor%}
                               {% if user.is_authenticated %}
-                            <input type="submit"  value="Add">
+                            <input type="submit"  id="submit" value="Add">
                               {% endif %}
                             </form>
                           </div>
@@ -246,8 +291,14 @@
                                 {% for i in Dinner%}
                                   {% if user.is_authenticated %}
                                   <div class="menu">
-                                  <label><input type="checkbox" class="form-check-input" id="dinner-item" value ="{{i.id}}" name="dinner">{{i.name}} {{i.Price_small}} {{i.Price_large}}</label><br>
-                                  <span class="dinsize" id="dinsize{{i.id}}" data-base={{i.id}}><label><input type="checkbox" id="dinner_size" name="dinner_size" value="{{i.id}}" >size</label><br></span>
+                                  <label class="menu-input"><input type="checkbox" class="form-check-input" id="dinner-item" value ="{{i.id}}" name="dinner">{{i.name}} {{i.Price_small}} {{i.Price_large}}</label><br>
+                                  <span class="dinsize" id="dinsize{{i.id}}" data-base={{i.id}}>
+                                    <label class="size-button">
+                                      <input type="checkbox" id="dinner_size" name="dinner_size" value="{{i.id}}">
+                                      <span class="size-text">LARGE</span>
+                                      <span class="background"></span>
+                                    </label><br></span>
+
                                   </div>
                                   {% else %}
                                       <div>
@@ -256,7 +307,7 @@
                                   {%endif%}
                                 {%endfor%}
                                 {% if user.is_authenticated %}
-                              <input type="submit"  value="Add">
+                              <input type="submit" id="submit" value="Add">
                                 {% endif %}
                               </form>
                             </div>
