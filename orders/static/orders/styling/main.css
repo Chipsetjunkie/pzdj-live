@@ -2,6 +2,8 @@ b{
   margin-left: 50px;
 }
 
+
+
 #cart-section{
   margin-top: 2%;
   margin-left: 90%;
@@ -9,10 +11,9 @@ b{
 
 
 #pizza-items{
-  margin-top: 12%;
-  display:flex;
+  display: flex;
   flex-direction: row;
-  justify-content:space-around;
+  justify-content: space-around;
 
 }
 
@@ -26,13 +27,24 @@ b{
 }
 
 #Pizza-card{
+  display: grid;
+  grid-template-rows: 50px 350px 100px;
   box-shadow: 0 6px 10px 0px rgba(0,0,0,0.4);
+  width: 300px;
   height: 500px;
+  margin-top: 10%;
+  margin-bottom: 10%;
+
 }
 
 #Sicillian-card{
-    box-shadow: 0 6px 10px 0px rgba(0,0,0,0.4);
-    height: 500px;
+  display: grid;
+  grid-template-rows: 50px 350px 100px;
+  box-shadow: 0 6px 10px 0px rgba(0,0,0,0.4);
+  width: 300px;
+  height: 500px;
+  margin-top: 10%;
+  margin-bottom: 10%;
 }
 
 #Sub-card{
@@ -82,9 +94,15 @@ b{
 }
 
 #submit{
+  border:0;
+  height: 45px;
+  width:100px;
+  border-radius: 50px;
   position:relative;
   top:20%;
   left:30%;
+  box-shadow: 0 5px 2px 0 rgba(0,0,0,0.3);
+
 }
 
 .nav-contents{
@@ -155,45 +173,77 @@ b{
 
 }
 
-.card-body{
-  font-family: sans-serif;
-}
-
-.card-bodyarea{
-    padding: 20px;
-    padding-right: 0;
-    height: 400px;
-    overflow-y: hidden;
-
-}
-
-.card-bodyarea:hover{
-  overflow-y: auto;
-}
 
 .options{
   display: flex;
   justify-content:flex-start;
 
 }
+/* Main Card Control*/
+.cardhead{
+}
+
+.cardbody{
+  padding: 10%;
+}
+
+.mini-cards{
+  display:grid;
+  height: 350px;
+
+}
+
+.minicard{
+    margin-top: 5%;
+    position: absolute;
+    width: 100%;
+    max-width: 240px;
+    height: 350px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.3);
+    background: white;
+    padding-left: 10%;
+    padding-top: 10%;
+    transition:transform 200ms;
+}
+
+.cardfooter{
+    z-index:50;
+    background: white;
+    border-top-left-radius: 30px;
+    box-shadow: 0 -2px 2px 0 rgba(0,0,0,0.3);
+}
+
+
+
+.minicard:nth-last-child(3){
+    transform: translate(0,-40px) scale(0.95);
+    z-index:2;
+}
+.minicard:nth-last-child(2){
+    transform: translate(0,-20px) scale(1);
+    z-index:3;
+}
+.minicard:nth-last-child(1){
+    transform:  scale(1.05);
+    z-index:4;
+
+}
+
+
+/* checkbox scroll fix*/
+
 .menu{
   display: flex;
   flex-direction: row;
 }
 
-.custom-card-footer{
-  padding-left: 0;
-  width: 100%;
-  height: 100px;
-  box-shadow: 0 -5px 5px -5px rgba(0,0,0,0.3);
-  border-top-right-radius: 20%;
-}
-
-/* button design*/
-
 .menu-input{
   position:relative;
 }
+
+
+/* Large button design*/
 
 .size-button {
   position: relative;
@@ -216,7 +266,6 @@ b{
   left:10px;
   top:3px;
   color:black;
-  z-index: 1;
 
   }
 
@@ -240,4 +289,17 @@ b{
 .size-button input:checked + .size-text{
   font-weight: 400;
   color: white;
+}
+
+
+/* Animation */
+@keyframes shuffle{
+60%{
+    transform:translate(-125px,-20px) scale(0.85) rotate(-10deg);
+    animation-timing-function: ease-in;
+}
+100%{
+  transform:translate(0px, -20px) scale(0.85) ;
+  z-index: 1
+}
 }

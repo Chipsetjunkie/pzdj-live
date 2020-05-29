@@ -1,28 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    document.querySelector("#Other-items").onmouseover = () => {
+    st = document.querySelectorAll(".mini-cards");
 
-        document.querySelector("#Sub-card").style.marginLeft = "3%";
-        document.querySelector("#Sub-card").style.transform = "rotateZ(0)";
-        document.querySelector("#Pasta-card").style.marginLeft = "27%";
-        document.querySelector("#Pasta-card").style.transform = "rotateZ(0)";
-        document.querySelector("#Salad-card").style.marginLeft = "51%";
-        document.querySelector("#Salad-card").style.transform = "rotateZ(0)";
-        document.querySelector("#Dinner-card").style.marginLeft = "75%";
-        document.querySelector("#Dinner-card").style.transform = "rotateZ(0)";
+    let reg_stack=[...st][0];
+    let sci_stack=[...st][1];
+
+
+    [...reg_stack.children].forEach(i => {
+        reg_stack.prepend(i)
+      });
+
+    [...sci_stack.children].forEach(i => {
+          sci_stack.prepend(i)
+        });
+
+    document.querySelector(".reg-next").onclick= () => {
+          card = reg_stack.lastElementChild;
+          card.style.animation= "shuffle 600ms";
+          setTimeout(() =>{
+              card.style.animation= "";
+              reg_stack.prepend(card)
+          },600)
 
     }
 
-    document.querySelector("#Other-items").onmouseout = () => {
-
-        document.querySelector("#Sub-card").style.marginLeft = "31%";
-        document.querySelector("#Sub-card").style.transform = "rotateZ(-10deg)";
-        document.querySelector("#Pasta-card").style.marginLeft = "34%";
-        document.querySelector("#Pasta-card").style.transform = "rotateZ(0)";
-        document.querySelector("#Salad-card").style.marginLeft = "37%";
-        document.querySelector("#Salad-card").style.transform = "rotateZ(10deg)";
-        document.querySelector("#Dinner-card").style.marginLeft = "40%";
-        document.querySelector("#Dinner-card").style.transform = "rotateZ(20deg)";
+    document.querySelector(".sci-next").onclick= () => {
+          card = sci_stack.lastElementChild;
+          card.style.animation= "shuffle 600ms";
+          setTimeout(() =>{
+              card.style.animation= "";
+              sci_stack.prepend(card);
+          },600)
 
     }
 
