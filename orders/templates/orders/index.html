@@ -55,6 +55,7 @@
               <div id ="pizza-items" >
                     <div class="card" id="Pizza-card">
                       <div class="cardhead">
+                        <h1>Regular</h1>
                       </div>
                       <div class="cardbody">
                             <form id="regular-form" method="post">
@@ -139,9 +140,9 @@
 
                     <!-- Scillian Card -->
                     <div class="card" id="Sicillian-card">
-                        <div class="cardhead">
-                          <img src="pizza.png" alt="">
-                        </div>
+                      <div class="cardhead">
+                        <h1>Scillian</h1>
+                      </div>
                         <div class="cardbody">
                             <form id="sicillian-form" method="post">
                                 {% csrf_token %}
@@ -217,17 +218,20 @@
                             {% if user.is_authenticated %}
                             <input type="submit"  id="submit" value="Add">
                             {% endif %}
-                            <button type="button" class="sci-next">next</button>  
+                            <button type="button" class="sci-next">next</button>
                         </div>
                       </form>
                     </div>
               </div>
 
-              <!-- Subs
+              <!-- Subs -->
               <div  id="Other-items">
                  <p id="second-section"></p>
                     <div class="card" id = "Sub-card" style="width: 18rem;">
-                      <div class="card-body">
+                      <div class="card-cover">
+                          <img src="{% static 'orders/media/subs.png' %}" alt="">
+                      </div>
+                      <div class="cardbody-others">
                         <h5 class="card-title">Subs</h5>
                         <form id="sub-form" method="post">
                           {% csrf_token %}
@@ -241,7 +245,6 @@
                                   <span class="size-text">LARGE</span>
                                   <span class="background"></span>
                                 </label><br></span>
-
                               </div>
                               {% else %}
                                   <div>
@@ -249,16 +252,22 @@
                                   </div>
                               {%endif%}
                             {%endfor%}
-                            {% if user.is_authenticated %}
-                          <input type="submit"  id="submit" value="Add">
-                            {% endif %}
+                      </div>
+                      <div class="cardfooter-others">
+                        {% if user.is_authenticated %}
+                            <input type="submit"  id="submit" value="Add">
+                        {% endif %}
                         </form>
+                        <button type="button" name="button">submit</button>
                       </div>
                       </div>
-                    -->
-                      <!-- Pasta
+
+                      <!-- Pasta -->
                       <div class="card" id = "Pasta-card" style="width: 18rem;">
-                        <div class="card-body">
+                        <div class="card-cover">
+                            <img src="{% static 'orders/media/pasta.png' %}" alt="">
+                        </div>
+                        <div class="cardbody-others">
                           <h5 class="card-title">Pasta</h5>
                           <form id="pasta-form" method="post">
                             {% csrf_token %}
@@ -271,16 +280,22 @@
                                   </div>
                               {%endif%}
                             {%endfor%}
-                            {% if user.is_authenticated %}
-                          <input type="submit"  id="submit" value="Add">
-                            {% endif %}
+                        </div>
+                        <div class="cardfooter-others">
+                          {% if user.is_authenticated %}
+                              <input type="submit"  id="submit" value="Add">
+                          {% endif %}
                           </form>
+                          <button type="button" name="button">submit</button>
                         </div>
                         </div>
-                        -->
-                        <!--Salad
+
+                        <!--Salad -->
                         <div class="card" id = "Salad-card" style="width: 18rem;">
-                          <div class="card-body">
+                          <div class="card-cover">
+                              <img src="{% static 'orders/media/salad.png' %}" alt="">
+                          </div>
+                          <div class="cardbody-others">
                             <h5 class="card-title">Salad</h5>
                             <form id="salad-form" method="post">
                               {% csrf_token %}
@@ -293,15 +308,21 @@
                                     </div>
                                 {%endif%}
                               {%endfor%}
-                              {% if user.is_authenticated %}
-                            <input type="submit"  id="submit" value="Add">
-                              {% endif %}
-                            </form>
                           </div>
-                          </div> -->
-                          <!-- Dinner Plates
+                          <div class="cardfooter-others">
+                            {% if user.is_authenticated %}
+                                <input type="submit"  id="submit" value="Add">
+                            {% endif %}
+                            </form>
+                            <button type="button" name="button">submit</button>
+                          </div>
+                          </div>
+                          <!-- Dinner Plates -->
                           <div class="card" id = "Dinner-card" style="width: 18rem;">
-                            <div class="card-body">
+                            <div class="card-cover">
+                                <img src="{% static 'orders/media/dinner.png' %}" alt="">
+                            </div>
+                            <div class="cardbody-others">
                               <h5 class="card-title">Dinner Plates</h5>
                               <form id="dinner-form" method="post">
                                 {% csrf_token %}
@@ -323,10 +344,13 @@
                                       </div>
                                   {%endif%}
                                 {%endfor%}
-                                {% if user.is_authenticated %}
-                              <input type="submit" id="submit" value="Add">
-                                {% endif %}
+                            </div>
+                            <div class="cardfooter-others">
+                              {% if user.is_authenticated %}
+                                  <input type="submit"  id="submit" value="Add">
+                              {% endif %}
                               </form>
+                              <button type="button" name="button">submit</button>
                             </div>
                             </div>
                         </div>
@@ -334,7 +358,7 @@
                     <p id="footer"> footer</p>
               </div>
           </div>
-          -->
+
   </body>
 
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -344,7 +368,7 @@
   {% load static %}
   <script src ="{% static 'orders/scripts/events.js' %}"></script>
   <script src ="{% static 'orders/scripts/animate.js' %}"></script>
-  <!--<script src ="{% static 'orders/scripts/serv_comm.js' %}"></script>
--->
+  <script src ="{% static 'orders/scripts/serv_comm.js' %}"></script>
+
 
 </html>

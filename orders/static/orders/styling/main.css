@@ -2,7 +2,53 @@ b{
   margin-left: 50px;
 }
 
+img{
+  margin-left: 13%;
+  margin-top: 35%;
+  margin-bottom: 25%;
+  border-radius:100%;
+  transition: 800ms;
+}
+.card-cover{
+  background: #FFCC99;
+  margin-top: 10%;
+  height: 400px;
+  transition: height 1s;
+}
 
+.cardbody-others{
+  transition-delay: 1s;
+  display: none;
+  padding-left: 5%;
+  padding-top: 20%;
+  height: 53vh;
+  z-index: 1;
+  width: 100%;
+  background: white;
+  overflow-y: scroll;
+
+
+}
+
+.cardfooter-others{
+  display: none;
+  padding: 20px;
+}
+
+.cardhead{
+  position: relative;
+  top:-25px;
+  background: white;
+  transform: scale(0.8);
+  border: 2px solid rgba(0,0,0,0.1);
+  border-radius: 150px;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
+
+}
+
+.cardhead h1{
+   margin-left: 25%;
+}
 
 #cart-section{
   margin-top: 2%;
@@ -14,16 +60,15 @@ b{
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-
+  margin-top:10%;
 }
 
 #Other-items{
-  margin-top: 10%;
+  margin-top: 20%;
   display: flex;
   flex-direction: row;
   width: 100%;
   height:50%;
-  background: yellow
 }
 
 #Pizza-card{
@@ -52,9 +97,10 @@ b{
     z-index: 1;
     margin-left:31%;
     transform: rotateZ(-10deg);
-    box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.4);
     transition: all .5s;
-    height: 70vh;
+    height: 450px;
 }
 
 
@@ -75,6 +121,7 @@ b{
   box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
   transition: all .5s;
   height:70vh;
+
 }
 
 #Dinner-card{
@@ -88,7 +135,7 @@ b{
 }
 
 #footer{
-  margin-top:10%;
+  margin-top:500px;
   height: 50vh;
   background: orange;
 }
@@ -180,8 +227,7 @@ b{
 
 }
 /* Main Card Control*/
-.cardhead{
-}
+
 
 .cardbody{
   padding: 10%;
