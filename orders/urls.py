@@ -14,7 +14,10 @@ urlpatterns = [
         path('salad/',views.Salad, name="salad"),
         path('cart/',views.Checkout_cart, name="cart"),
         path('stripe-key',views.get_key,name="stripe"),
-        path('cart/pay',views.pay,name="pay")
+        path('cart/pay',views.pay,name="pay"),
+        path('cart/complete',views.on_complete, name="complete"),
+        path('orders/',views.orders,name="orders"),
+        path('cart/address',views.address,name="address")
 ]
 
-# stripe key, pay  --security check 
+# stripe key, pay  --security check

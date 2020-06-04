@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () =>{
 
 
-fetch("/stripe-key")
+fetch("/stripe-key",{method:"POST"})
 .then(key =>{
     return key.json()
 })
@@ -14,21 +14,56 @@ fetch("/stripe-key")
 .then(result => {
     var card_info = result.card;
     var stripe_ins = result.stripe;
+    console.log("entered");
 
-    document.querySelector('.checkbutton').addEventListener('click', () => {
+    document.querySelector("#address-form").onsubmit = e =>{
+
+      e.preventDefault();
+      form = new FormData(document.querySelector("#address-form"))
+      context = {method:'POST',body:form}
+      console.log("entered");
+      fetch('address',context)
+      .then(response =>response.json())
+      .then(result => {
+        return result.output;
+      })
+      .then(output =>{
+        console.log(output)
+        if (output != 'Nope'){
         document.querySelector('#address').innerHTML = "";
         document.querySelector('.grid-item-1').style.marginTop = '50%';
         document.querySelector('.grid-item-1').style.marginBottom= '60%';
         document.querySelector('#payment-form').innerHTML += stripe_form()
         document.querySelector(".button1").style.display = "none";
-        document.querySelector('.checkbutton').innerHTML = '';
-        document.querySelector("#cancel-button").innerHTML = cancelbutton();
-        document.querySelector("#payment-button").innerHTML = paymentbutton();
+        document.querySelector('#checkbutton').innerHTML = '';
+        //document.querySelector("#cancel-button").innerHTML = cancelbutton();
+        document.querySelector("#cancel-button").style.display="block";
+        //document.querySelector("#payment-button").innerHTML = paymentbutton();
+        document.querySelector("#payment-button").style.display="block";
         card_info[0].mount(".card-number")
         card_info[1].mount(".card-xp")
-        card_info[2].mount(".card-cvv")
-    });
+        card_info[2].mount(".card-cvv")}
 
+        else{
+          root = document.documentElement;
+          root.style.setProperty("--color","#FF9999");
+          root.style.setProperty("--text-color","#FF0000");
+          var errorMsg = document.querySelector(".error-area");
+          errorMsg.style.display = "block";
+          errorMsg.textContent = "Invalid phone number";
+
+          setTimeout(function() {
+            errorMsg.style.display = "none";
+            errorMsg.textContent = "";
+          }, 4000);
+
+        }});
+      };
+
+     card_info[0].on('change',e =>{
+        document.querySelector(".card-img").setAttribute("src",cards[e.brand]);
+
+    });
 
     document.querySelector('#cancel-button').addEventListener('click' ,() =>{
             location.reload()
@@ -42,6 +77,8 @@ fetch("/stripe-key")
                   console.log(result.error.messages);
                 }
                 else{
+                      document.querySelector(".paytext").style.display = "none";
+                      document.querySelector(".spinner").style.display = "inherit";
                       var form = new FormData(document.querySelector("#payment-form"))
                       form.append("paymentMethodId",result.paymentMethod.id)
                       config = {method:"POST",body:form}
@@ -56,20 +93,29 @@ fetch("/stripe-key")
                           handleAction(response.clientSecret)
                         }
                         else {
-                            document.querySelector(".error-area").textContent = "Payment successfull";
-                          setTimeout(function() {
-                            document.querySelector(".error-area").textContent= "";
-                          }, 5000);
+                            document.querySelector(".paytext").style.display = "inline";
+                            document.querySelector(".spinner").style.display = "none";
+                            root = document.documentElement;
+                            root.style.setProperty("--color","#99FF99");
+                            root.style.setProperty("--text-color","#009900");
+                            document.querySelector(".error-area").textContent = "Success!! redirecting in 5s";
+                            document.querySelector(".error-area").style.display = "block";
+                            update_cart();
+                            setTimeout(function() {
+                              document.querySelector(".error-area").style.display = "none";
+                              document.querySelector(".error-area").textContent= "";
+                              location.replace("http://127.0.0.1:8000");
+                            }, 5000);
+
+
+
+
                         }
                       })
                 }
-      })
-    });
-
-
-
-    });
-});
+              }); });
+            });
+          });
 
 //    HELPER FUNCTIONS
 
@@ -77,6 +123,7 @@ fetch("/stripe-key")
 
 function stripe_form(){
 
+    var img = document.createElement("img");
     var card_n = document.createElement('div');
     var card_xp = document.createElement('div');
     var card_cv = document.createElement('div');
@@ -90,28 +137,15 @@ function stripe_form(){
     card_n.setAttribute("class","card-number");
     card_xp.setAttribute("class","card-xp");
     card_cv.setAttribute("class","card-cvv");
-
+    img.setAttribute("class","card-img");
+    img.setAttribute("src",cards["unknown"]);
     form.setAttribute("method","post")
     form.setAttribute("id","payment-form")
 
-    row_1.innerHTML = card_n.outerHTML
+    row_1.innerHTML = img.outerHTML +card_n.outerHTML
     row_2.innerHTML = card_xp.outerHTML + card_cv.outerHTML
 
     return row_1.outerHTML + row_2.outerHTML
-}
-
-
-function paymentbutton(){
-      var pay = document.createElement("button");
-      pay.innerHTML = "Pay";
-
-      return pay.outerHTML;
-}
-
-function cancelbutton(){
-      var cancel = document.createElement("button");
-      cancel.innerHTML = "Cancel";
-      return cancel.outerHTML;
 }
 
 // PAYMENT RELATED
@@ -146,9 +180,17 @@ function setup(data){
 
 
 function showError(errorMsgText) {
+  document.querySelector(".paytext").style.display = "inline";
+  document.querySelector(".spinner").style.display = "none";
+  root = document.documentElement;
+  root.style.setProperty("--color","#FF9999");
+  root.style.setProperty("--text-color","#FF0000");
   var errorMsg = document.querySelector(".error-area");
+  errorMsg.style.display = "block";
   errorMsg.textContent = errorMsgText;
+
   setTimeout(function() {
+    errorMsg.style.display = "none";
     errorMsg.textContent = "";
   }, 4000);
 };
@@ -171,11 +213,29 @@ function handleAction(clientSecret) {
           if (json.error) {
             showError(json.error);
           } else {
+            document.querySelector(".paytext").style.display = "inline";
+            document.querySelector(".spinner").style.display = "none";
+            root = document.documentElement;
+            root.style.setProperty("--color","#99FF99");
+            root.style.setProperty("--text-color","#009900");
+            document.querySelector(".error-area").textContent = "Success!! redirecting in 5s";
+            document.querySelector(".error-area").style.display = "block";
+            update_cart();
             setTimeout(function() {
-              document.querySelector(".error-area").textContent= "Payment Completed"
-            }, 200);
+              document.querySelector(".error-area").style.display = "none";
+              document.querySelector(".error-area").textContent= "";
+              location.replace("http://127.0.0.1:8000");
+            }, 5000);
           }
         });
     }
   });
 };
+
+
+function update_cart(){
+  fetch('complete',{method:"POST"})
+  .then(result =>{
+      console.log(result)
+  });
+}

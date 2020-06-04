@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-      <h1 style="margin:0 auto;">you are logged out</h1>
-      <button type="button">
-        <a href="{% url 'index'%}">Go back</a>
-      </button>
-  </body>
+<html>
+<head>
+<title> Test </title>
+{%load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'Accounts/styling/logout.css'%}">
+</head>
+
+<body>
+  <h1>You are Logged out</h1>
+  <div class="buttons">
+    <a href="{% url 'login'%}"><button type="button" id="back" name="button">Back</button></a>
+    <a href="{% url 'index'%}"><button type="button" id="home"name="button">Home</button></a>
+
+
+  </div>
+</body>
 </html>

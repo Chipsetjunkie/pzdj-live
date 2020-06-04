@@ -11,26 +11,18 @@
     <link rel="stylesheet" href="{% static 'orders/styling/cart.css' %}">
     <script src="{% static 'orders/scripts/cart.js'%}"></script>
 
-
   </head>
   <body>
-    <div class="error-area">
 
+    <div class="error-area">
+        asdasd
     </div>
     <div class="grid-container">
       <div class="grid-item-1">
         <div id="address">
-              <form method="post">
+              <form id="address-form" method="post">
                 {% csrf_token %}
-                <label></label><br>
-                <input type="text" class="innertext" placeholder="Name"><br>
-                <input type="text" class="innertext" placeholder="Address 1"><br>
-                <input type="text" class="innertext" placeholder="Address 2"><br>
-                <input type="text" class="innertext" placeholder="City"><br>
-                <input type="text" class="innertext" placeholder="State"><br>
-                <input type="text" class="innertext" placeholder="Postal Code"><br>
-                <input type="text" class="innertext" placeholder="Telephone"><br>
-                <label></label>
+                {{form.as_p}}
               </form>
         </div>
         <div class="payment">
@@ -42,9 +34,11 @@
       <div class="grid-item-4"></div>
       <div class="grid-item-2">
             <div id="cartclear">
-              <a href="{% url 'clear'%}">
-                <img src="{% static 'orders/icons/delete.png' %}" alt="">
-              </a>
+                {% if cart.stuff.all != None %}
+                <a href="{% url 'clear'%}">
+                  <img src="{% static 'orders/icons/delete.png' %}" alt="">
+                </a>
+                {%endif%}
             </div>
 
             <div id="contents">
@@ -67,16 +61,21 @@
               <div id="backbutton">
                     <a href="{% url 'index'%}"><button id ="back-button" class="button1" type="button" name="button"> Back </button></a>
               </div>
-              <div class="checkbutton">
-                    <button id ="checkout-button" class="button1" type="button" name="button"> Check </button>
+              {% if cart.stuff.all != None %}
+              <div id="checkbutton">
+                    <button id ="checkout-button" class="button1" type="submit" form="address-form"> Check </button>
               </div>
 
               <div id="cancel-button">
+                  <button type="button" name="button">Cancel</button>
               </div>
               <div id="payment-button">
-
+                  <button type="button" name="button">
+                  <span class="paytext">Pay</span>
+                  <div class="spinner"></div>
+                  </button>
               </div>
-
+              {%endif%}
             </div>
       </div>
     </div>
@@ -84,78 +83,13 @@
   Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 </footer>
 </body>
+<script type="text/javascript">
+     var cards = {"visa" : "{% static 'orders/media/visa.png' %}",
+              "amex" : "{% static 'orders/media/amex.png' %}",
+              "diners" : "{% static 'orders/media/diners.png' %}",
+              "discover" : "{% static 'orders/media/discover.png' %}",
+              "mastercard" : "{% static 'orders/media/mastercard.png' %}",
+              "jcb" : "{% static 'orders/media/jcb.png' %}",
+              "unknown" : "{% static 'orders/media/credit.png' %}"}
+</script>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-    Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-
-      <div class="container-fluid">
-          <div class="row">
-              <div class="col-2">
-
-              </div>
-              <div id="sidecolumn" class="col-2">
-              <div  id="fillers_1" class="row"></div>
-              <div id="siderow" class="row">
-                <div id="address-card" class="card">
-                    <div id="address" class="card-body">
-                        <form method="post">
-                          <label></label><br>
-                          <input type="text" class="innertext" placeholder="Name"><br>
-                          <input type="text" class="innertext" placeholder="Address 1"><br>
-                          <input type="text" class="innertext" placeholder="Address 2"><br>
-                          <input type="text" class="innertext" placeholder="City"><br>
-                          <input type="text" class="innertext" placeholder="State"><br>
-                          <input type="text" class="innertext" placeholder="Postal Code"><br>
-                          <input type="text" class="innertext" placeholder="Telephone"><br>
-                          <label></label>
-                        </form>
-                    </div>
-                </div>
-              </div>
-              <div  id="fillers_2" class="row"></div>
-          </div>
-              <div class="col-5">
-                    <div id="subjectrow" class="row">
-                            <div id="content" class="card">
-                                <div class="card-body">
-                                  <div class="card-body-area">
-                                      <p>Items to be displayed</p>
-                                  </div>
-                                </div>
-                            </div>
-                    </div>
-                    <div id="customrow" class="row">
-                          <div class="col-4">
-
-                          </div>
-                          <div class="col">
-                                <button id ="back-button" class="buttom1" type="button" name="button"> Click me !! </button>
-                          </div>
-                          <div class="col">
-                                <button id ="checkout-button" class="button2" type="button" name="button"> Click me !! </button>
-                          </div>
-
-                    </div>
-              </div>
-              <div class="col">
-
-              </div>
-
-          </div>
-
-      </div>
-  </body>
-</html>-->

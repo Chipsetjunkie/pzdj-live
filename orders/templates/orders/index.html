@@ -10,42 +10,31 @@
   </head>
 
   <body>
-    <div class="jumbotron jumbotron-fluid">
+    <div class="jumbotron" >
       <nav class="top">
             <div class="nav-contents">
                   <a href="#">Pizzas</a>
                   <a href="#Other-items">Menu</a>
-                  <a href="#">Directions</a>
-                  <a href="#">Hours</a>
-                  <a href="#">Contacts</a>
                   {% if user.is_authenticated %}
-                    <div class="dropdown">
+                      <div class="dropdown">
                           <a class='dropdown-content' href="#">Profile</a>
-                    <div class="dropdown-items">
-                          <a href="#">Orders</a><br>
-                          <a href="{% url 'logout'%}">Logout</a><br>
-
-                    </div>
-                  </div>
-                  <a href="#">Cart</a>
+                          <div class="dropdown-items">
+                              <a href="{% url 'orders' %}">Orders</a><br>
+                              <a href="{% url 'logout'%}">Logout</a><br>
+                          </div>
+                        </div>
+                        <a href="{% url 'cart'%}" class="cartbutton">Cart</a>
                   {% else %}
-                  <a href="{% url 'login' %}">Login</a>
+                        <a href="{% url 'login' %}">Login</a>
                   {% endif %}
                   <a href="#">Attr</a>
             </div>
 
-            <div id= "cart-section">
-                {% if cart.first == None %}
-                <button id="cart-button" type="button" class="btn btn-outline-warning">Cart</button>
-                {% else %}
-                <a href="{% url 'cart'%}"><button type="button" class="btn btn-warning">Cart</button></a>
-                {% endif %}
-            </div>
       </nav>
 
   <div class="container">
-    <h1 class="display-1">Fluid jumbotron</h1>
-    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+    <h1 class="display-1">Pinnochio</h1>
+    <p class="lead">Worlds best selling pizza.</p>
   </div>
 </div>
     <!-- Cart Button -->
@@ -53,6 +42,7 @@
     <div id='Menu-cards'>
           <!-- Regular Items -->
               <div id ="pizza-items" >
+                <p id=float> +Added  </p>
                     <div class="card" id="Pizza-card">
                       <div class="cardhead">
                         <h1>Regular</h1>
@@ -130,14 +120,23 @@
                               </div>
                               </div>
                       <div class="cardfooter">
-                            {% if user.is_authenticated %}
-                            <input type="submit"  id="submit" value="Add">
-                            {% endif %}
-                            <button type="button" class="reg-next">next</button>
+                              <div class="">
+                                {% if user.is_authenticated %}
+                                <input type="submit"  id="submit" value="Add">
+                                {% endif %}
+                              </div>
+                              <div class="">
+                                <button type="button" class="reg-next">></button>
+                              </div>
+
                       </div>
                       </form>
               </div>
-
+                    <div class="vr">
+                          <div class="">
+                              <span></span>
+                          </div>
+                    </div>
                     <!-- Scillian Card -->
                     <div class="card" id="Sicillian-card">
                       <div class="cardhead">
@@ -215,13 +214,26 @@
                                 </div>
                         </div>
                         <div class="cardfooter">
+                          <div class="">
                             {% if user.is_authenticated %}
                             <input type="submit"  id="submit" value="Add">
                             {% endif %}
-                            <button type="button" class="sci-next">next</button>
+                          </div>
+                          <div class="">
+                            <button type="button" class="sci-next">></button>
+                          </div>
                         </div>
                       </form>
                     </div>
+              </div>
+              <div class="description">
+                <div class="">
+                    <p>descrip 1</p>
+                </div>
+                <div class="">
+                    <p>descrip 2</p>
+                </div>
+
               </div>
 
               <!-- Subs -->
@@ -229,7 +241,7 @@
                  <p id="second-section"></p>
                     <div class="card" id = "Sub-card" style="width: 18rem;">
                       <div class="card-cover">
-                          <img src="{% static 'orders/media/subs.png' %}" alt="">
+                          <img id="img" src="{% static 'orders/media/subs.png' %}" alt="">
                       </div>
                       <div class="cardbody-others">
                         <h5 class="card-title">Subs</h5>
@@ -238,7 +250,7 @@
                             {% for i in Subs%}
                               {% if user.is_authenticated %}
                               <div class="menu">
-                              <label class="menu-input"><input type="checkbox" class="form-check-input" id="sub-item" value ="{{i.id}}" name="subs">{{i.name}} {{i.Price_small}} {{i.Price_large}}</label><br>
+                              <label class="menu-input"><input type="checkbox" class="form-check-input" id="sub-item" value ="{{i.id}}" name="subs">{{i.name}}</label><br>
                               <span class="subsize" id="subsize{{i.id}}" data-base={{i.id}}>
                                 <label class="size-button">
                                   <input type="checkbox" id="sub-size" name="subs_size" value="{{i.id}}">
@@ -258,14 +270,13 @@
                             <input type="submit"  id="submit" value="Add">
                         {% endif %}
                         </form>
-                        <button type="button" name="button">submit</button>
                       </div>
                       </div>
 
                       <!-- Pasta -->
                       <div class="card" id = "Pasta-card" style="width: 18rem;">
                         <div class="card-cover">
-                            <img src="{% static 'orders/media/pasta.png' %}" alt="">
+                            <img id="img" src="{% static 'orders/media/pasta.png' %}" alt="">
                         </div>
                         <div class="cardbody-others">
                           <h5 class="card-title">Pasta</h5>
@@ -273,7 +284,7 @@
                             {% csrf_token %}
                             {% for i in Pasta%}
                               {% if user.is_authenticated %}
-                              <label><input type="checkbox" class="form-check-input" id="pasta-item" value ="{{i.id}}" name="pasta">{{i.name}} {{i.Price_small}}</label><br>
+                              <label><input type="checkbox" class="form-check-input" id="pasta-item" value ="{{i.id}}" name="pasta">{{i.name}}</label><br>
                               {% else %}
                                   <div>
                                       <p>{{i}}</p>
@@ -286,14 +297,13 @@
                               <input type="submit"  id="submit" value="Add">
                           {% endif %}
                           </form>
-                          <button type="button" name="button">submit</button>
                         </div>
                         </div>
 
                         <!--Salad -->
                         <div class="card" id = "Salad-card" style="width: 18rem;">
                           <div class="card-cover">
-                              <img src="{% static 'orders/media/salad.png' %}" alt="">
+                              <img id="img" src="{% static 'orders/media/salad.png' %}" alt="">
                           </div>
                           <div class="cardbody-others">
                             <h5 class="card-title">Salad</h5>
@@ -301,7 +311,7 @@
                               {% csrf_token %}
                               {% for i in Salad%}
                                 {% if user.is_authenticated %}
-                                <label><input type="checkbox" class="form-check-input" id="salad-item" value ="{{i.id}}" name="salad">{{i.name}} {{i.Price_small}} </label><br>
+                                <label><input type="checkbox" class="form-check-input" id="salad-item" value ="{{i.id}}" name="salad">{{i.name}}</label><br>
                                 {% else %}
                                     <div>
                                         <p>{{i}}</p>
@@ -314,13 +324,12 @@
                                 <input type="submit"  id="submit" value="Add">
                             {% endif %}
                             </form>
-                            <button type="button" name="button">submit</button>
                           </div>
                           </div>
                           <!-- Dinner Plates -->
                           <div class="card" id = "Dinner-card" style="width: 18rem;">
                             <div class="card-cover">
-                                <img src="{% static 'orders/media/dinner.png' %}" alt="">
+                                <img id="img" src="{% static 'orders/media/dinner.png' %}" alt="">
                             </div>
                             <div class="cardbody-others">
                               <h5 class="card-title">Dinner Plates</h5>
@@ -329,7 +338,7 @@
                                 {% for i in Dinner%}
                                   {% if user.is_authenticated %}
                                   <div class="menu">
-                                  <label class="menu-input"><input type="checkbox" class="form-check-input" id="dinner-item" value ="{{i.id}}" name="dinner">{{i.name}} {{i.Price_small}} {{i.Price_large}}</label><br>
+                                  <label class="menu-input"><input type="checkbox" class="form-check-input" id="dinner-item" value ="{{i.id}}" name="dinner">{{i.name}}</label><br>
                                   <span class="dinsize" id="dinsize{{i.id}}" data-base={{i.id}}>
                                     <label class="size-button">
                                       <input type="checkbox" id="dinner_size" name="dinner_size" value="{{i.id}}">
@@ -350,14 +359,44 @@
                                   <input type="submit"  id="submit" value="Add">
                               {% endif %}
                               </form>
-                              <button type="button" name="button">submit</button>
+
                             </div>
                             </div>
                         </div>
-              <div  id="Footer">
-                    <p id="footer"> footer</p>
-              </div>
           </div>
+          <div  id="Footer">
+            <div class="footer-items">
+              <div class="centers">
+                <div class="maps">
+                    <a href="http://shorturl.at/gjoPU">
+                    <img id="footer-image" src="{%static 'orders/media/map_scale.png'%}" alt="">
+                    </a>
+                </div>
+              </div>
+              <div class="contact">
+                  <p><b>Contact</b></p>
+                  <p>phone numbers:617-876-4897 or 617-876-0012</p>
+                  <p>fax number:617-661-6188</p>
+                  <p>Twitter @PinocchiosPizz</p>
+                  <p>Instagram @pinocchiospizza1</p>
+                  <p>Our mailing address is:</p>
+                  <p>Pinocchio's Pizza</p>
+                  <p>74 Winthrop Street</p>
+                  <p>Cambridge, MA 02138</p>
+
+                  <p> email: pinocchiospizza1@gmail.com </p>
+              </div>
+              <div class="hours">
+                <b>Hours Open</b>
+                <p>Sunday	1pm - 12 midnight</p>
+                <p>Monday-Thursday	11am - 1am</p>
+                <p>Friday-Saturday	11am - 2:30 am*</p>
+
+
+              </div>
+            </div>
+      </div>
+
 
   </body>
 
@@ -369,6 +408,8 @@
   <script src ="{% static 'orders/scripts/events.js' %}"></script>
   <script src ="{% static 'orders/scripts/animate.js' %}"></script>
   <script src ="{% static 'orders/scripts/serv_comm.js' %}"></script>
-
+  <script type="text/javascript">
+    var cart = `{{cart.first}}`;
+  </script>
 
 </html>

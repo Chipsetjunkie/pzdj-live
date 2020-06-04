@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'orders/styling/order.css'%}">
+  </head>
+  <body>
+  <div class="button-div">
+        <a href="{% url 'index'%}"><button type="button" name="button"><span id="but">back</span></button></a>
+  </div>
+
+  {% if carts != None%}
+  {% for cart in carts%}
+  <div class="order-cards">
+    <div class="cards">
+    {% for i in cart.stuff.all%}
+      {% if i.Base != None %}
+            <p id="menutype"><b>{{i.Base.menucategory}}</b></p>
+            <small><p id="ingredients">{{i}}</p></small>
+            <br>
+      {% else %}
+            <p id="menutype"><b>{{i.Others.all.first.menucategory}}</b></p>
+            <small><p id="ingredients">{{i}}</p></small>
+            <br>
+      {% endif %}
+
+    {% endfor %}
+    <div>
+          <br><br><b>Grand total: <span id="cost">{{cart.Total}}$</span></b>
+          <p>Shipping_address : {{cart.Ship_Add}}</p>
+    </div>
+    </div>
+
+
+  </div>
+  {% endfor %}
+  {%endif%}
+  </body>
+</html>

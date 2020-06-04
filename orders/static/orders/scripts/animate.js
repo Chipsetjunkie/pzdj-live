@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   var animate = 0;
 
   window.onscroll = () =>{
-     if (window.scrollY > 1500){
+     if (window.scrollY > 1300 && window.scrollY < 1750){
         if(animate == 0){
           animate_cards();
           animate = 1;
@@ -32,7 +32,7 @@ function animate_cards(){
   document.querySelector("#Dinner-card").style.transform = "rotateZ(0)";
 
   setTimeout(()=>{
-    document.querySelectorAll('img').forEach(i => {
+    document.querySelectorAll('#img').forEach(i => {
           i.style.transform="translateY(-200px)";
     });
     document.querySelectorAll('.card-cover').forEach(j => {
@@ -61,7 +61,7 @@ function unanimate_cards(){
   document.querySelector("#Dinner-card").style.marginLeft = "40%";
   document.querySelector("#Dinner-card").style.transform = "rotateZ(20deg)";
   setTimeout(()=>{
-    document.querySelectorAll('img').forEach(i => {
+    document.querySelectorAll('#img').forEach(i => {
           i.style.transform="translateY(0)";
     });
     document.querySelectorAll('.card-cover').forEach(j => {

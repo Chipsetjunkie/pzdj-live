@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded",() => {
-      console.log("loaded js!!")
+      console.log("loaded js!!");
+      console.log(cart);
       var reg_top_cnt = 0;
       var reg_spc_cnt = 0;
       var reg_base_cnt = 0;

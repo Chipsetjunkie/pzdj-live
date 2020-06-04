@@ -4,52 +4,88 @@ document.addEventListener("DOMContentLoaded", () =>{
       document.querySelector("#regular-form").onsubmit = function(event){
 
             event.preventDefault();
-            process("#regular-form",'added/')
-            document.querySelector("#cart-section").innerHTML = button();
+            pizza_process("#regular-form",'added/',"450px","1100px")
 
       }
 
       document.querySelector("#sicillian-form").onsubmit = function(event){
             event.preventDefault();
-            process("#sicillian-form",'addeds/')
-            document.querySelector("#cart-section").innerHTML = button();
-
+            pizza_process("#sicillian-form",'addeds/',"800px","1100px")
       }
 
       document.querySelector("#pasta-form").onsubmit = function(event){
             event.preventDefault();
-            process("#pasta-form",'pasta/')
-            document.querySelector("#cart-section").innerHTML = button();
-
+            other_process("#pasta-form",'pasta/',"500px","2100px");
       }
       document.querySelector("#salad-form").onsubmit = function(event){
             event.preventDefault();
-            process("#salad-form",'salad/')
-            document.querySelector("#cart-section").innerHTML = button();
-
+            other_process("#salad-form",'salad/',"800px","2100px")
       }
       document.querySelector("#sub-form").onsubmit = function(event){
             event.preventDefault();
-            process("#sub-form",'subs/')
-            document.querySelector("#cart-section").innerHTML = button();
-
+            other_process("#sub-form",'subs/',"200px","2100px")
       }
       document.querySelector("#dinner-form").onsubmit = function(event){
             event.preventDefault();
-            process("#dinner-form",'dine/')
-            document.querySelector("#cart-section").innerHTML = button();
-
+            other_process("#dinner-form",'dine/',"1100px","2100px")
       }
 
 
 });
 
-function process(tag,route){
+
+function pizza_process(tag,route,left,top){
     var request = new XMLHttpRequest();
     request.open('POST',route);
     var formdata = new FormData(document.querySelector(tag));
+    fetch(route,{method:"POST",body:formdata})
     request.send(formdata);
-    console.log(request.response);
+    document.querySelector("#float").style.left=left;
+    document.querySelector("#float").style.top=top;
+    document.querySelector("#float").style.animation ="pop 2s";
+    document.querySelector("#float").style.display="inline";
+    setTimeout(()=>{
+        document.querySelector("#float").style.animation ="";
+        document.querySelector("#float").style.display="none";
+      },2000);
+    document.querySelector(".cartbutton").style.border="1px solid black";
+    document.querySelector(".cartbutton").style.borderRadius= "10px";
+    document.querySelector(".cartbutton").style.paddingLeft= "4px";
+    document.querySelector(".cartbutton").style.paddingRight="4px";
+
+
+}
+
+
+
+function other_process(tag,route,left,top){
+    var formdata = new FormData(document.querySelector(tag));
+    fetch(route,{method:"POST",body:formdata})
+    .then(response => response.json())
+    .then(output =>{
+
+        if (output.output != "Fail"){
+          document.querySelector(".cartbutton").style.border="1px solid black";
+          document.querySelector(".cartbutton").style.borderRadius= "10px";
+          document.querySelector(".cartbutton").style.paddingLeft= "4px";
+          document.querySelector(".cartbutton").style.paddingRight="4px";
+          document.querySelector("#float").innerHTML="+ Added";
+        }
+        else{
+          document.querySelector("#float").innerHTML="Not Added";
+        }
+        document.querySelector("#float").style.left=left;
+        document.querySelector("#float").style.top=top;
+        document.querySelector("#float").style.animation ="pop 2s";
+        document.querySelector("#float").style.display="inline";
+        setTimeout(()=>{
+            document.querySelector("#float").style.animation ="";
+            document.querySelector("#float").style.display="none";
+          },2000);
+
+
+
+    });
 }
 
 

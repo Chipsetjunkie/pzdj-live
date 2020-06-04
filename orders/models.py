@@ -43,15 +43,23 @@ class Order(models.Model):
                 clean_string = re.sub(r",\sNone","",clean_string).strip()
                 return clean_string
 
+class AddressBook(models.Model):
+    Name = models.CharField(max_length=32)
+    Address = models.CharField(max_length=64)
+    City = models.CharField(max_length=32)
+    Postal_Code = models.CharField(max_length=32)
+    Telephone = models.IntegerField()
+
+    def __str__(self):
+        return self.Name + "\n"+ self.Address + "\n"+self.City+"\n"+self.Postal_Code+"\n"+ str(self.Telephone)
 
 
 class Cart(models.Model):
-    #user = models.ForeignKey(Profile,on_delete=models.CASCADE)
-    user = models.CharField(max_length= 32, unique=True)
+    user = models.CharField(null=True,blank=True,max_length= 32, unique=False)
     stuff = models.ManyToManyField(Order)
     order_status = models.BooleanField(default = False)
     Total = models.FloatField(default= 0.0)
-
+    Ship_Add = models.ForeignKey(AddressBook,on_delete=models.CASCADE,null=True,blank=True,related_name="Shipping_address")
 
 class RegularPrice(models.Model):
     Base_small = models.FloatField()

@@ -1,3 +1,14 @@
+:root{
+  --text-color: #FF0000; /*00ff00*/
+  --color: #FF9999; /*99ff99*/
+}
+
+body{
+  overflow: hidden;
+
+}
+
+/*#121b62 	#090d4a*/
 .grid-container {
   display: grid;
   grid-template-columns:30vh 20vh auto;
@@ -22,14 +33,39 @@
 
 }
 
+.error-area{
+  display: none;
+  background: var(--color);
+  padding: 2%;
+  border: 1px solid var(--color);
+  position: absolute;
+  z-index:10;
+  margin-left: 40%;
+  font-size: 12px;
+  color: var(--text-color);
+  box-shadow: 0 0 5px 0 var(--color);
+  opacity: 0.7;
+}
+
+label{
+  display: none;
+}
+
 input{
   background: orange;
   border: 0;
   border-bottom: 1px solid rgba(0,0,0,0.1);
-  margin-top: 10%;
+  margin-top: 5%;
   width:80%;
 }
 
+textarea{
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 5px;
+  margin-top: 10%;
+  background: orange;
+}
 
 .innertext{
   font-family: fantasy;
@@ -43,12 +79,12 @@ input{
 
 .row1{
   display: grid;
-  margin-left:16%;
+  margin-left: 2%;
   margin-top:15%;
   margin-right:15%;
   width:auto;
-  background: rgba(0,0,0,0.5);
   border-radius:10px;
+  grid-template-columns: 35px auto;
 }
 
 .card-element-expiry{
@@ -60,8 +96,12 @@ input{
 }
 
 .row1 > .StripeElement{
-  padding: 5%;
+ margin-left: 5%;
+ background: rgba(0,0,0,0.4);
+ padding: 5%;
+ padding-top: 0;
 }
+
 
 .row2{
   display: grid;
@@ -128,7 +168,73 @@ span{
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+
 }
+
+#backbutton{
+  margin-right: 10%;
+  margin-top:1%;
+}
+
+#backbutton button{
+  width: 100px;
+  height: 40px;
+}
+
+
+#checkbutton{
+  margin-top:1%;
+  margin-right: 10%;
+}
+
+#checkbutton button{
+  width: 100px;
+  height: 40px;
+}
+
+
+#cancel-button{
+  display: none;
+  margin-right: 10%;
+  margin-top:1%;
+}
+
+#cancel-button button{
+  width: 100px;
+  height: 40px;
+}
+
+
+#payment-button{
+    display: none;
+    margin-right: 10%;
+    margin-top:1%;
+}
+
+#payment-button button{
+  width: 100px;
+  height: 40px;
+}
+
+
+.spinner{
+  display: none;
+  margin-left: 10%;
+  border: 4px solid rgba(0,0,0,0);
+  border-top: 4px solid #3498db;
+  border-left: 4px solid #3498db;
+  border-right: 4px solid #3498db;
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
 hr {
   border: none;

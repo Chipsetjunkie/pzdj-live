@@ -1,0 +1,44 @@
+.cards{
+  border: 1px solid rgba(0,0,0,0.2);
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px 0 rgba(0,0,0,0.4);
+  margin:5%;
+  font-family: sans-serif;
+  padding: 1%;
+  font-size: 11px;
+}
+
+#cost{
+  border-radius:10px;
+  background: gold;
+  color:black;
+  padding: 5px;
+  font-size: 8px;
+  font-family: monospace;
+}
+
+.button-div{
+  display: flex;
+  width: 100%;
+  position: -webkit-sticky;
+  position: sticky;
+  flex-direction: row;
+  top:0;
+  justify-content: flex-end;
+}
+
+button{
+  cursor: pointer;
+  border: 1px solid  rgba(174, 214, 241,0.3) ;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background: white;
+  height: 40px;
+  width: 70px;
+  box-shadow: -2px 0 5px 0 rgba(0,0,0,0.3)
+}
+#but{
+  color: #5dade2;
+
+}

@@ -1,18 +1,22 @@
 from django.shortcuts import render,HttpResponse, redirect
 from .models import Menu
 from django.urls import reverse
-from orders.models import Menu,Order,Cart,RegularPrice,SicillianPrice
+from orders.models import Menu,Order,RegularPrice,SicillianPrice,Cart,AddressBook
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.conf import settings
+from .forms import AddressForm
+from django.views.decorators.csrf import csrf_exempt
+
 import stripe
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 stripe.api_version = settings.STRIPE_API_VERSION
 
-# Create your views here.
+# // main /////
 def index(request):
+
     context = {
         'username': request.user,
         'Reg_tops': Menu.objects.all().filter(menucategory='Regular',special=False),
@@ -23,23 +27,27 @@ def index(request):
         'Pasta': Menu.objects.all().filter(menucategory='Pasta'),
         'Salad': Menu.objects.all().filter(menucategory='Salad'),
         'Dinner': Menu.objects.all().filter(menucategory='Dinner'),
-        'cart': Cart.objects.all().filter(user=str(request.user), order_status = False)
-    }
+        'cart':Cart.objects.all().filter(order_status = False,user=str(request.user))
+        }
 
 
     return render(request,"orders/index.html",context)
 
 # ///////    Payment Section  /////////////
 @login_required
+@csrf_exempt
 def get_key(request):
-    return JsonResponse({"KEY":settings.STRIPE_PUBLISHABLE_KEY})
+    if request.method == 'POST':
+        return JsonResponse({"KEY":settings.STRIPE_PUBLISHABLE_KEY})
+    else:
+        return HttpResponse("You are lost")
 
 def get_amount(request):
     return cart.Total
 
 def pay(request):
     data = request.POST
-    cart= Cart.objects.all().filter(user=request.user, order_status = False).first()
+    cart= Cart.objects.all().filter(user=str(request.user), order_status = False).first()
 
     try:
             if 'paymentMethodId' in data:
@@ -71,6 +79,19 @@ def generate_response(intent):
         #print("payment recieved")
         return JsonResponse({'clientSecret':intent['client_secret']})
 
+@csrf_exempt
+def on_complete(request):
+    order = Cart.objects.all().filter(user=str(request.user), order_status = False).first()
+    if request.method == 'POST':
+        order.order_status = True
+        order.save()
+        return redirect(reverse("index"))
+    else:
+        return HttpResponse("You are lost biyatch!! Get the fuck out of here")
+
+def orders(request):
+    order = Cart.objects.all().filter(user=str(request.user), order_status = True)
+    return render(request,"orders/orders.html",{'carts':order})
 # ////  Index routes section    //////////
 
 def Regular(request):
@@ -120,7 +141,7 @@ def Regular(request):
         od = Order(Order.objects.last().id+1,*order)
 
 
-    if Cart.objects.all().filter(user = str(request.user)).last() == None:
+    if Cart.objects.all().filter(order_status=False,user=str(request.user)).last() == None:
         if Cart.objects.last() == None:
             cart = Cart(1,user = str(request.user))
 
@@ -129,7 +150,7 @@ def Regular(request):
 
         cart.save()
     else:
-        cart = Cart.objects.all().filter(user = str(request.user)).first()
+        cart = Cart.objects.all().filter(order_status=False,user = str(request.user)).first()
 
 
     od.order_total = round(get_price(items,RegularPrice),2)
@@ -137,10 +158,6 @@ def Regular(request):
     cart.stuff.add(od)
     cart.Total += od.order_total
     cart.save()
-    print(order)
-    #print("added!!")
-    #return redirect(reverse('index'))
-    #return JsonResponse({"data":updated_data(request)})
     return HttpResponse("r-updated!")
 
 def Sicillian(request):
@@ -189,177 +206,211 @@ def Sicillian(request):
     else:
         od = Order(Order.objects.last().id+1,*order)
 
-    if Cart.objects.all().filter(user = request.user).last() == None:
+    if Cart.objects.all().filter(user =str(request.user),order_status=False).last() == None:
         if Cart.objects.last() == None:
-            cart = Cart(1,user = request.user)
+            cart = Cart(1,user =str(request.user))
 
         else:
-            cart = Cart(Cart.objects.last().id + 1,user = request.user)
+            cart = Cart(Cart.objects.last().id + 1,user =str(request.user))
 
         cart.save()
     else:
-        cart = Cart.objects.all().filter(user = request.user).first()
+        cart = Cart.objects.all().filter(user =str(request.user),order_status=False).first()
 
     od.order_total = round(get_price(items,SicillianPrice),2)
     od.save()
     cart.stuff.add(od)
     cart.Total += od.order_total
     cart.save()
-    #return redirect(reverse('index'))
-    #return JsonResponse({"data":updated_data(request)})
-    return "s-updated! "
+    return HttpResponse("s-updated!")
 
 
 def Subs(request):
     item_selections = request.POST
-    Total_cost = 0.0
+    print(len(item_selections))
+    if len(item_selections) != 1:
+                Total_cost = 0.0
 
-    if Order.objects.last() == None:
-        od = Order(1)
+                if Order.objects.last() == None:
+                    od = Order(1)
+                else:
+                    od = Order(Order.objects.last().id+1)
+
+                od.save()
+                for i in item_selections.getlist("subs"):
+                    obj = Menu.objects.all().filter(id=i)
+                    if i in item_selections.getlist("subs_size"):
+                            Total_cost += obj[0].Price_large
+                    else:
+                        Total_cost += obj[0].Price_small
+                    od.Others.add(obj[0])
+                od.order_total = Total_cost
+                od.save()
+                if Cart.objects.all().filter(user =str(request.user),order_status=False).last() == None:
+                    if Cart.objects.last() == None:
+                        cart = Cart(1,user =str(request.user))
+
+                    else:
+                        cart = Cart(Cart.objects.last().id + 1,user =str(request.user))
+
+                    cart.save()
+                else:
+                    cart = Cart.objects.all().filter(user =str(request.user),order_status=False).first()
+
+                cart.stuff.add(od)
+                cart.Total += Total_cost
+                cart.save()
+
+                return JsonResponse({"output":"Nope"})
     else:
-        od = Order(Order.objects.last().id+1)
-
-    od.save()
-    for i in item_selections.getlist("subs"):
-        obj = Menu.objects.all().filter(id=i)
-        if i in item_selections.getlist("subs_size"):
-                Total_cost += obj[0].Price_large
-        else:
-            Total_cost += obj[0].Price_small
-        od.Others.add(obj[0])
-    od.order_total = Total_cost
-    od.save()
-    if Cart.objects.all().filter(user = request.user).last() == None:
-        if Cart.objects.last() == None:
-            cart = Cart(1,user = request.user)
-
-        else:
-            cart = Cart(Cart.objects.last().id + 1,user = request.user)
-
-        cart.save()
-    else:
-        cart = Cart.objects.all().filter(user = request.user).first()
-
-    cart.stuff.add(od)
-    cart.Total += Total_cost
-    cart.save()
-
-    return redirect(reverse("index"))
+        print('exiting')
+        return JsonResponse({"output":"Fail"})
 
 def Dine(request):
     item_selections = request.POST
-    Total_cost = 0.0
+    if len(item_selections)!=1:
+            Total_cost = 0.0
 
-    if Order.objects.last() == None:
-        od = Order(1)
+            if Order.objects.last() == None:
+                od = Order(1)
+            else:
+                od = Order(Order.objects.last().id+1)
+
+            od.save()
+            for i in item_selections.getlist("dinner"):
+                obj = Menu.objects.all().filter(id=i)
+                if i in item_selections.getlist("dinner_size"):
+                    Total_cost += obj[0].Price_large
+                else:
+                    Total_cost += obj[0].Price_small
+                od.Others.add(obj[0])
+            od.order_total = Total_cost
+            od.save()
+            if Cart.objects.all().filter(user =str(request.user),order_status=False).last() == None:
+                if Cart.objects.last() == None:
+                    cart = Cart(1,user =str(request.user))
+
+                else:
+                    cart = Cart(Cart.objects.last().id + 1,user =str(request.user))
+
+                cart.save()
+            else:
+                cart = Cart.objects.all().filter(user =str(request.user),order_status=False).first()
+
+            cart.stuff.add(od)
+            cart.Total += Total_cost
+            cart.save()
+
+            return JsonResponse({"output":"Nope"})
     else:
-        od = Order(Order.objects.last().id+1)
-
-    od.save()
-    for i in item_selections.getlist("dinner"):
-        obj = Menu.objects.all().filter(id=i)
-        if i in item_selections.getlist("dinner_size"):
-            Total_cost += obj[0].Price_large
-        else:
-            Total_cost += obj[0].Price_small
-        od.Others.add(obj[0])
-    od.order_total = Total_cost
-    od.save()
-    if Cart.objects.all().filter(user = request.user).last() == None:
-        if Cart.objects.last() == None:
-            cart = Cart(1,user = request.user)
-
-        else:
-            cart = Cart(Cart.objects.last().id + 1,user = request.user)
-
-        cart.save()
-    else:
-        cart = Cart.objects.all().filter(user = request.user).first()
-
-    cart.stuff.add(od)
-    cart.Total += Total_cost
-    cart.save()
-
-    return redirect(reverse("index"))
-
+        print('exiting')
+        return JsonResponse({"output":"Fail"})
 
 def Salad(request):
     item_selections = request.POST
-    Total_cost = 0.0
+    if len(item_selections) !=1:
+            Total_cost = 0.0
 
-    if Order.objects.last() == None:
-        od = Order(1)
+            if Order.objects.last() == None:
+                od = Order(1)
+            else:
+                od = Order(Order.objects.last().id+1)
+
+            od.save()
+            for i in item_selections.getlist("salad"):
+                obj = Menu.objects.all().filter(id=i)
+                Total_cost += obj[0].Price_small
+                od.Others.add(obj[0])
+            od.order_total = Total_cost
+            od.save()
+            if Cart.objects.all().filter(user =str(request.user),order_status=False).last() == None:
+                if Cart.objects.last() == None:
+                    cart = Cart(1,user =str(request.user))
+
+                else:
+                    cart = Cart(Cart.objects.last().id + 1,user =str(request.user))
+
+                cart.save()
+            else:
+                cart = Cart.objects.all().filter(user =str(request.user),order_status=False).first()
+
+            cart.stuff.add(od)
+            cart.Total += Total_cost
+            cart.save()
+
+            return JsonResponse({"output":"Nope"})
     else:
-        od = Order(Order.objects.last().id+1)
-
-    od.save()
-    for i in item_selections.getlist("salad"):
-        obj = Menu.objects.all().filter(id=i)
-        Total_cost += obj[0].Price_small
-        od.Others.add(obj[0])
-    od.order_total = Total_cost
-    od.save()
-    if Cart.objects.all().filter(user = request.user).last() == None:
-        if Cart.objects.last() == None:
-            cart = Cart(1,user = request.user)
-
-        else:
-            cart = Cart(Cart.objects.last().id + 1,user = request.user)
-
-        cart.save()
-    else:
-        cart = Cart.objects.all().filter(user = request.user).first()
-
-    cart.stuff.add(od)
-    cart.Total += Total_cost
-    cart.save()
-
-    return redirect(reverse("index"))
+        return JsonResponse({"output":"Fail"})
 
 def Pasta(request):
     item_selections = request.POST
-    Total_cost = 0.0
+    if len(item_selections) !=1:
+            Total_cost = 0.0
 
-    if Order.objects.last() == None:
-        od = Order(1)
+            if Order.objects.last() == None:
+                od = Order(1)
+            else:
+                od = Order(Order.objects.last().id+1)
+
+            od.save()
+            for i in item_selections.getlist("pasta"):
+                obj = Menu.objects.all().filter(id=i)
+                Total_cost += obj[0].Price_small
+                od.Others.add(obj[0])
+            od.order_total = Total_cost
+            od.save()
+            if Cart.objects.all().filter(user = str(request.user),order_status=False).last() == None:
+                if Cart.objects.last() == None:
+                    cart = Cart(1,user =str(request.user))
+
+                else:
+                    cart = Cart(Cart.objects.last().id + 1,user = str(request.user))
+
+                cart.save()
+            else:
+                cart = Cart.objects.all().filter(user = str(request.user),order_status=False).first()
+
+            cart.stuff.add(od)
+            cart.Total += Total_cost
+            cart.save()
+
+            return JsonResponse({"output":"Nope"})
+
     else:
-        od = Order(Order.objects.last().id+1)
-
-    od.save()
-    for i in item_selections.getlist("pasta"):
-        obj = Menu.objects.all().filter(id=i)
-        Total_cost += obj[0].Price_small
-        od.Others.add(obj[0])
-    od.order_total = Total_cost
-    od.save()
-    if Cart.objects.all().filter(user = request.user).last() == None:
-        if Cart.objects.last() == None:
-            cart = Cart(1,user = request.user)
-
-        else:
-            cart = Cart(Cart.objects.last().id + 1,user = request.user)
-
-        cart.save()
-    else:
-        cart = Cart.objects.all().filter(user = request.user).first()
-
-    cart.stuff.add(od)
-    cart.Total += Total_cost
-    cart.save()
-
-    return redirect(reverse("index"))
+        return JsonResponse({"output":"Fail"})
 
 # ////////        Cart Section  //////////
 @login_required
 def Checkout_cart(request):
     context = {
-    'cart': Cart.objects.all().filter(user=request.user, order_status = False).first()
+    'cart': Cart.objects.all().filter(user=str(request.user), order_status = False).first(),
+    'form':AddressForm()
     }
     return render(request,"orders/cart.html",context)
 
 @login_required
+def address(request):
+    if request.method == 'POST':
+        print ("entered")
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = Cart.objects.all().filter(user=str(request.user), order_status = False).first()
+            user.Ship_Add = AddressBook.objects.all().last()
+            user.save()
+            print("positive result")
+            return JsonResponse({"output":"Yes"})
+        else:
+            print("negative result")
+            return JsonResponse({"output":"Nope"})
+
+    else:
+        print("oops")
+        return HttpResponse("Go back!")
+
+@login_required
 def clear(request):
-    cart = Cart.objects.all().filter(user=request.user, order_status = False)
+    cart = Cart.objects.all().filter(user=str(request.user), order_status = False)
     cart_items = cart.first().stuff.all()
     id  = [i.id for i in cart_items]
     cart.delete()
@@ -406,9 +457,3 @@ def get_price(items,tag):
                 total += sm_price[i+1]#test7
 
     return total
-
-"""def updated_data(request):
-    a = Cart.objects.all().filter(user=request.user, order_status = False).first()
-    result_str = [[i.Base.menucategory,str(i)] for i in a.stuff.all()]
-    return result_str
-"""
