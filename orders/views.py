@@ -87,7 +87,7 @@ def on_complete(request):
         order.save()
         return redirect(reverse("index"))
     else:
-        return HttpResponse("You are lost biyatch!! Get the fuck out of here")
+        return HttpResponse("You are lost")
 
 def orders(request):
     order = Cart.objects.all().filter(user=str(request.user), order_status = True)
